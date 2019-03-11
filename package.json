@@ -1,0 +1,37 @@
+{
+  "name": "dmdashboard",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "test": "jest tests",
+    "start-api": "node api-server.js",
+    "start-web": "node web-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dashron/dmdashboard.git"
+  },
+  "author": "Aaron Hedges <aaron@dashron.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Dashron/dmdashboard/issues"
+  },
+  "homepage": "https://github.com/Dashron/dmdashboard#readme",
+  "dependencies": {
+    "@google-cloud/error-reporting": "^0.5.0",
+    "@google-cloud/logging": "^1.2.0",
+    "handlebars": "4.0.11",
+    "jsonwebtoken": "^8.3.0",
+    "jwk-to-pem": "^2.0.0",
+    "moment": "2.20.1",
+    "pg": "7.4.1",
+    "remarkable": "1.7.1",
+    "roads": "5.0.0-alpha.17",
+    "roads-api": "https://github.com/Dashron/roads-api.git",
+    "roads-req": "0.2.0",
+    "roads-server": "1.0.0-alpha.1",
+    "sequelize": "4.33.4"
+  }
+}

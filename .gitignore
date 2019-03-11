@@ -1,3 +1,7 @@
+dbconf.json
+ca-certificate.txt
+nginx.conf
+
 # Logs
 logs
 *.log
