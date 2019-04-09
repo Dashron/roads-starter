@@ -11,7 +11,7 @@ module.exports = class UserRepresentation extends JSONRepresentation {
             "properties": {
                 "id": {
                     "type": "number",
-                    "readOnly": true,
+                    "roadsReadOnly": true,
                     "resolve": (models) => {
                         return models.id;
                     }

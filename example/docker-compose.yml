@@ -1,0 +1,30 @@
+version: '3'
+services:
+  # https://stackoverflow.com/a/35895156/1886079
+  init:
+    build: .
+    command: ["node", "api/init.js"]
+    #environment:
+    #  - GOOGLE_APPLICATION_CREDENTIALS=/code/config/stackdriver.json
+  # https://docs.docker.com/compose/gettingstarted/#step-5-edit-the-compose-file-to-add-a-bind-mount
+  api:
+    build: .
+    ports: 
+      - "8081:8081"
+    depends_on:
+      - "init"
+    restart: always
+    command: ["npm", "run", "start-api"]
+    # https://node-postgres.com/features/connecting
+    #environment:
+    #  - GOOGLE_APPLICATION_CREDENTIALS=/code/config/stackdriver.json
+  web:
+    build: .
+    ports: 
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - "api"
+    command: ["npm", "run", "start-web"]
+    #environment:
+    #  - GOOGLE_APPLICATION_CREDENTIALS=/code/config/stackdriver.json

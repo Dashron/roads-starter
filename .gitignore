@@ -1,6 +1,6 @@
-dbconf.json
-ca-certificate.txt
-nginx.conf
+example/config/config.json
+example/config/nginx.conf
+example/config/postgres-cert.txt
 
 # Logs
 logs
