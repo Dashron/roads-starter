@@ -8,7 +8,8 @@ let fs = require('fs');
 
 let {
     Road,
-    middleware
+    middleware,
+    Response
 } = require('roads');
 
 module.exports = class APIProject {
@@ -63,7 +64,7 @@ module.exports = class APIProject {
         this.addModel('./users/userModel.js');
 
         // I don't like passing in the connection like this
-        this.addResource('/users/{remote_id}', require('./users/userResource.js')(this.connection), {
+        this.addResource('/users/{remote_id}', require('./users/userResource.js')(this.connection, this.config), {
             urlParams: {
                 schema: {
                     remote_id: {
@@ -84,12 +85,12 @@ module.exports = class APIProject {
             
             switch (err.code) {
                 case 404:
-                    return new roads.Response('Not Found', 404);
+                    return new Response('Not Found', 404);
                 case 405:
-                    return new roads.Response('Not Allowed', 405);
+                    return new Response('Not Allowed', 405);
                 default:
                 case 500:
-                    return new roads.Response('Unknown Error', 500);
+                    return new Response('Unknown Error', 500);
             }
         });
         

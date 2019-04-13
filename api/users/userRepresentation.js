@@ -1,7 +1,6 @@
 "use strict";
 
 const JSONRepresentation = require('roads-api').JSONRepresentation;
-let connection = require('../db.js').getConnectedClient();
 let moment = require('moment');
 
 module.exports = class UserRepresentation extends JSONRepresentation {
