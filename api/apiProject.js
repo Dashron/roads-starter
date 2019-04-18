@@ -12,9 +12,27 @@ let {
     Response
 } = require('roads');
 
+function hasAllKeys(check, keys) {
+    let checkKeys = Object.keys(check);
+
+    for (let i = 0; i < keys.length; i++) {
+        if (!checkKeys.includes(keys[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 module.exports = class APIProject {
     constructor (config) {
-        console.log('creating');
+        if (!hasAllKeys(config, ['logger', 'hostname', 'protocol', 'corsHeaders', 'corsMethods',
+                'PGDATABASE', 'PGUSER', 'PGPASSWORD', 'PGHOST', 'PGPORT', 'PGSSL'
+            ])) {
+
+            throw new Error('Mising config key.');
+        }
+        
         this.road = new Road();
         this.config = config;
         this.logger = Logger.createLogger(config.logger);
@@ -61,6 +79,10 @@ module.exports = class APIProject {
     }
 
     addRoadsUserEndpoints() {
+        if (!hasAllKeys(this.config, ['secret'])) {
+            
+        throw new Error('Mising config key.');
+    }
         this.addModel('./users/userModel.js');
 
         // I don't like passing in the connection like this
