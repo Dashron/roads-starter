@@ -5,11 +5,11 @@ const { NotFoundError, InvalidRequestError } = require('roads-api').HTTPErrors;
 const { MEDIA_JSON, MEDIA_JSON_MERGE, AUTH_BEARER } = require('roads-api').CONSTANTS;
 
 // Not a big fan of this method for passing the connection
-module.exports = function (dbConnection, config) {
+module.exports = function (dbConnection, secret) {
     return class UserResource extends Resource {
         constructor() {
             super({
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(config.secret) },
+                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(secret) },
                 responseMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 defaultResponseMediaType: MEDIA_JSON,
                 defaultRequestMediaType: MEDIA_JSON,
@@ -17,7 +17,7 @@ module.exports = function (dbConnection, config) {
             }, ["get"]);
 
             this.addAction("fullReplace", {
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(config.secret) },
+                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(secret) },
                 requestMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 responseMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 defaultRequestMediaType: MEDIA_JSON,
@@ -26,7 +26,7 @@ module.exports = function (dbConnection, config) {
             });
             
             this.addAction("partialEdit", {
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(config.secret) },
+                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(secret) },
                 requestMediaTypes: { [MEDIA_JSON_MERGE]: require('./userRepresentation.js') },
                 defaultRequestMediaType: MEDIA_JSON_MERGE,
                 authRequired: true

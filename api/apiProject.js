@@ -86,7 +86,7 @@ module.exports = class APIProject {
         this.addModel('./users/userModel.js');
 
         // I don't like passing in the connection like this
-        this.addResource('/users/{remote_id}', require('./users/userResource.js')(this.connection, this.config), {
+        this.addResource('/users/{remote_id}', require('./users/userResource.js')(this.connection, this.config.secret), {
             urlParams: {
                 schema: {
                     remote_id: {
