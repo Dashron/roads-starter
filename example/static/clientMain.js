@@ -14,19 +14,5 @@ var pjax = new roads.PJAX(road, document.getElementById('container'), window);
 pjax.addTitleMiddleware();
 pjax.addCookieMiddleware(document);
 pjax.register();
-let router = new roads.middleware.SimpleRouter(road);
-require('../routes/applyPublicRoutes.js')(router);
-
-/*road.request('GET', '/')
-	.then(function (response) {
-		console.log(response);
-	});
-
-road.request('GET', '/test')
-	.then(function (response) {
-		console.log(response);
-	})
-	.catch(function (err) {
-		console.log('[' + err.code + ']' + err.message);
-		console.log(err.stack);
-	});*/
+// this is wrong for the new setup let router = new roads.middleware.SimpleRouter(road);
+// this wont work require('../routes/applyPublicRoutes.js')(router);

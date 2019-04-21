@@ -6,19 +6,16 @@
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-P7R7H6J');</script>
+    })(window,document,'script','dataLayer','{{config.GTM_ID}}');</script>
     <!-- End Google Tag Manager -->
 
     <meta charset="utf-8"/>
     <title>{{title}}</title>
-    <link rel="stylesheet" type="text/css" href="/index.css">
-    <link rel="stylesheet" type="text/css" href="/singlelist.css">
-    <link rel="stylesheet" type="text/css" href="/about.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700,900" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/index.css">
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P7R7H6J"
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{config.GTM_ID}}"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <header>
@@ -36,7 +33,5 @@
             <span>Made with <a href="http://roadsjs.com">Roads JS</a> and <a href="https://github.com/Dashron/roads-api">Roads API</a>.</span> 
         </div>
     </footer>
-
-    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
 </body>
 </html>
