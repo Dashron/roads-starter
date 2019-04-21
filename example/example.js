@@ -41,8 +41,10 @@ privateWeb.addStaticFolder('/static/', __dirname + '/static/css', 'text/css');
  */
 let indexTemplate = require('fs').readFileSync(__dirname + '/templates/index.html').toString('utf-8');
 privateWeb.getRouter().addRoute('GET', '/', function (url, body, headers) {
+    let pageData = {};
+    pageData.loggedIn = this.loggedIn;
     let indexPage = Handlebars.compile(indexTemplate);
-    return new this.Response(indexPage(), 200, {'content-type': 'text/html'});
+    return new this.Response(indexPage(pageData), 200, {'content-type': 'text/html'});
 });
 
 /*

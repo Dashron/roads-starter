@@ -67,7 +67,6 @@ module.exports = class APIProject {
             },
             operatorsAliases: false
         });
-        console.log('connection set');
     }
 
     addModel(path) {
@@ -126,7 +125,6 @@ module.exports = class APIProject {
             //"force": true
         })
         .then(function() {
-            console.log('dbs created');
             return module.exports.getConnectedClient();
         })
         .catch(function (err) {

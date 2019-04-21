@@ -10,8 +10,8 @@ const roadsReq = require('roads-req');
 const qs = require('querystring');
 const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
-
-let path = require('path');
+const crypto = require('crypto');
+const path = require('path');
 
 let {
     Road,
@@ -63,8 +63,6 @@ module.exports = class PrivateWebProject {
 
     getProperJwk(decodedHeader) {
         let kid = decodedHeader.kid;
-        console.log('kid', kid);
-        console.log('key len', this.config.cognitoJwks.keys.length);
 
         for (let i = 0; i < this.config.cognitoJwks.keys.length; i++) {
             if (this.config.cognitoJwks.keys[i].kid === kid) {
@@ -80,7 +78,6 @@ module.exports = class PrivateWebProject {
     }
 
     addStaticFile(urlPath, filePath, contentType, encoding='utf-8') {
-        console.log('adding static file: ' + filePath + ' to route ' + urlPath);
         this.router.addRoute('GET', urlPath, function (url, body, headers) {
             this.ignore_layout = true;
             return new this.Response(fs.readFileSync(filePath).toString(encoding), 200, {
@@ -112,6 +109,15 @@ module.exports = class PrivateWebProject {
     }
 
     start() {
+        let options = undefined;
+
+        if (this.config.credentials) {
+			options = {
+                key: fs.readFileSync(this.config.credentials.privateKey).toString(), 
+                cert: fs.readFileSync(this.config.credentials.certificate).toString()
+            };
+        }
+
         let server = new Server(this.road, function (err) {
             log.error(err);
             
@@ -124,7 +130,7 @@ module.exports = class PrivateWebProject {
                 case 500:
                     return new Response('Unknown Error', 500);
             }
-        });
+        }, options);
 
         server.listen(this.config.port, () => {
             log.log('listening at ' + this.config.hostname + ':' + this.config.port);
@@ -203,7 +209,6 @@ module.exports = class PrivateWebProject {
                 "refreshToken": authResponse.body.refresh_token
             }, {});
 
-    console.log('api user', apiUser);
             // todo: once this is all tested we should probably redirect back home.
             let response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
     
@@ -220,8 +225,7 @@ module.exports = class PrivateWebProject {
                 domain: config.hostname,
                 path: '/'
             });
-    
-            console.log('setting cookie');
+
             return response;
         });
     

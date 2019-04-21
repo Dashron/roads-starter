@@ -47,14 +47,12 @@ function removeEvent(event) {
     let target = event.target;
 
     if (!target.attributes.href) {
-        console.log('not a link');
         return;
     }
 
     event.preventDefault();
 
     if (!document.cookie) {
-        alert('No auth');
         return;
     }
 
