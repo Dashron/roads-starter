@@ -1,4 +1,5 @@
-// Add timeline element
+"use strict";
+
 (() => {
     let form = document.getElementById("addTimelineEventForm");
     

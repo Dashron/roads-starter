@@ -3,6 +3,7 @@ example/config/nginx.conf
 example/config/certificate.pem
 example/config/privatekey.pem
 example/config/postgres-cert.txt
+example/static/js/client.brws.js
 
 # Logs
 logs

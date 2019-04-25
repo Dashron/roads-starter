@@ -1,3 +1,5 @@
+"use strict";
+
 // Todo: Bring back google cloud client library using the proper config workflow
 
 // Imports the Google Cloud client library

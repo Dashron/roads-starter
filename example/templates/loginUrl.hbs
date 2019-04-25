@@ -1,5 +1,6 @@
 {{! vars: 
+ - cognitoUrl - hostname of your amazon cognito url
  - redirectUrl - full redirect url with scheme, hostname and path
  - client id - amazon cognito client id
 }}
-<a href="https://dashron.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id={{clientId}}&redirect_uri={{redirectUrl}}">login</a>
+<a href="https://{{cognitoUrl}}/login?response_type=code&client_id={{clientId}}&redirect_uri={{redirectUrl}}">login</a>

@@ -35,7 +35,7 @@ module.exports = class PrivateWebProject {
         this.road.use(middleware.setTitle);
         this.road.use(middleware.parseBody);
         this.road.use(require('./middleware/api.js')(config.api.secure, config.api.hostname, config.api.port));
-        this.road.use(require('./middleware/auth.js')(config.authCookieName, config.secret));
+        this.road.use(require('./middleware/privateAuth.js')(config.authCookieName, config.secret));
 
         this.router = new middleware.SimpleRouter(this.road);
     }
@@ -74,7 +74,7 @@ module.exports = class PrivateWebProject {
     }
 
     addRoutes(filePath) {
-        require(filePath)(this.router);
+        require(filePath)(this.router, this.config);
     }
 
     addStaticFile(urlPath, filePath, contentType, encoding='utf-8') {
@@ -101,6 +101,7 @@ module.exports = class PrivateWebProject {
 
         for (let i = 0; i < files.length; i++) {
 
+            console.log('adding static file ' + files[i] + ' to ' + rootPath + urlSeparator + files[i]);
             this.addStaticFile(rootPath + urlSeparator + files[i], path.format({
                 dir: folderPath,
                 base: files[i]
