@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 8080
 
 # CMD [ "node", "init.js"]
-CMD [ "npm", "start" ]
+# CMD [ "npm", "start" ]
