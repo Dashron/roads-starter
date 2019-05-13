@@ -1,4 +1,7 @@
-example/config/config.json
+example/config/config.default.js
+example/config/config.docker.js
+example/config/config.production.js
+example/config/config.development.js
 example/config/nginx.conf
 example/config/certificate.pem
 example/config/privatekey.pem

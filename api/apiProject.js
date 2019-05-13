@@ -13,6 +13,10 @@ let {
 } = require('roads');
 
 function hasAllKeys(check, keys) {
+    if (!check) {
+        return false;
+    }
+    
     let checkKeys = Object.keys(check);
 
     for (let i = 0; i < keys.length; i++) {
@@ -100,7 +104,16 @@ module.exports = class APIProject {
     start() {
         this.road.use(this.router.middleware(this.config.protocol, this.config.hostname));
         let log = this.logger;
-        
+
+        let options = undefined;
+
+        if (this.config.credentials) {
+            options = {
+                key: fs.readFileSync(this.config.credentials.privateKey).toString(),
+                cert: fs.readFileSync(this.config.credentials.certificate).toString()
+            };
+        }
+
         let server = new Server(this.road, function (err) {
             log.error(err);
             
@@ -113,7 +126,7 @@ module.exports = class APIProject {
                 case 500:
                     return new Response('Unknown Error', 500);
             }
-        });
+        }, options);
         
         server.listen(this.config.port, () => {
             log.log('listening at ' + this.config.hostname + ':' + this.config.port);

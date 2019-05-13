@@ -1,7 +1,7 @@
 "use strict";
 
 let roadsStarter = require('../index.js');
-let config = require('./config/config.json');
+let config = require('../config.js')(__dirname + '/config');
 const Handlebars = require('handlebars');
 let fs = require('fs');
 

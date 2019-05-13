@@ -31,7 +31,7 @@
     "roads": "5.0.0-beta.4",
     "roads-api": "0.4.6",
     "roads-req": "0.2.1",
-    "roads-server": "1.0.0-alpha.4",
+    "roads-server": "1.0.0-alpha.6",
     "sequelize": "5.7.1",
     "browserify": "16.2.3",
     "@babel/core": "7.4.3",
