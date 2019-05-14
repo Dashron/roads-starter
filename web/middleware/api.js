@@ -7,7 +7,6 @@ let {
 
 module.exports = (secure, hostname, port) => {
     // Add an "api" function to the request context that makes HTTP requests to the API
-    // todo: Should this have a hostname?
     let apiClient = new Client(secure, hostname, port);
     return  middleware.applyToContext('api', function (method, path, body, headers) {
         return apiClient.request(method, path, body, headers)

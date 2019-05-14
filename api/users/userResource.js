@@ -39,7 +39,6 @@ module.exports = function (dbConnection, secret) {
         }
 
         async modelsResolver(urlParams, searchParams, method, url) {
-            //TODO: hmm... how to get the connection into this
             let user = await dbConnection.models.user.findOne({
                 where: {
                     remoteId: urlParams.remote_id

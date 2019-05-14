@@ -8,7 +8,6 @@ let fs = require('fs');
 
 if (process.argv.length < 3 || process.argv[2] === "api") {
     console.log('starting api server');
-    // TODO: Maybe all projects should have an init call that sets up router and roads and stuff, like public web. this allows for consistency, and likely better testing too
     let api = new roadsStarter.APIProject(config.api);
     api.addRoadsUserEndpoints();
     api.start();
