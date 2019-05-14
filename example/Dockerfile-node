@@ -13,10 +13,7 @@ RUN npm install
 # If you are building your code for production
 # RUN npm install --only=production
 
+CMD [ "node", "buildClient.js"]
+
 # Bundle app source
 COPY . .
-
-EXPOSE 8080
-
-# CMD [ "node", "init.js"]
-# CMD [ "npm", "start" ]

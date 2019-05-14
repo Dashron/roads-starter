@@ -4,7 +4,7 @@ let indexTemplate = require('fs').readFileSync(__dirname + '/templates/index.hbs
 const Handlebars = require('handlebars');
 
 module.exports = function (router, config) {
-    router.addRoute('GET', '/', function (url, body, headers) {
+    router.addRoute('GET', '/', async function (url, body, headers) {
         let pageData = {};
         pageData.loggedIn = this.loggedIn;
         let indexPage = Handlebars.compile(indexTemplate);

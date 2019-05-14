@@ -3,9 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-module.exports = function (folderPath) {
-    let environment = process.env.ROADS_ENV;
-
+module.exports = function (folderPath, environment) {
     let files = fs.readdirSync(folderPath);
     let environmentConfig = {};
     let defaultConfig = {};

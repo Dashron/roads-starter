@@ -15,7 +15,7 @@ module.exports = {
             "GTM_ID": ""
         },
         "api": {
-            "hostname": "",
+            "hostname": "api",
             "secure": false,
             "port": 8081
         },

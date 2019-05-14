@@ -163,7 +163,7 @@ module.exports = class PrivateWebProject {
                 requestBody: qs.stringify({
                     grant_type: 'authorization_code',
                     client_id: config.cognitoClientId,
-                    redirect_uri: (config.secure ? 'https':'http') + '://' + config.hostname + (config.port ? ':' + config.port : '') + '/login/redirect',
+                    redirect_uri: config.cognitoRedirectUri,
                     code: url.query.code,
     
                 }),
@@ -210,11 +210,10 @@ module.exports = class PrivateWebProject {
                 "refreshToken": authResponse.body.refresh_token
             }, {});
 
-            // todo: once this is all tested we should probably redirect back home.
             let response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
     
             let token = jwt.sign({
-                val: 1 //apiUser.id
+                val: apiUser.id
             }, config.secret, {
                 expiresIn: '1d',
                 algorithm: 'HS256'

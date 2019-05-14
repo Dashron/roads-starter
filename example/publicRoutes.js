@@ -8,10 +8,8 @@ module.exports = function (router, config) {
     router.addRoute('GET', '/login', function (url, body, headers) {
         let loginPage = Handlebars.compile(loginTemplate);
         let responseBody = loginPage({
-            //redirectUrl: (config.web.secure ? 'https':'http') + '://localhost:8080/login/redirect',
-            // todo: use the proper hostname so cookies work
             cognitoUrl: config.cognitoUrl,
-            redirectUrl: (config.secure ? 'https':'http') + '://' + config.hostname + (config.port ? ':' + config.port : '') + '/login/redirect',
+            redirectUrl: config.cognitoRedirectUri,
             clientId: config.cognitoClientId
         });
     

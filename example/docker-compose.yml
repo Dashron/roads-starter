@@ -7,32 +7,34 @@ services:
   api:
     build:
       context: ../
-      dockerfile: example/Dockerfile
-    ports: 
-      - "8081:8081"
+      dockerfile: example/Dockerfile-node
     # depends_on:
     #   - "init"
     restart: always
+    environment: 
+      ROADS_ENV: "docker"
     command: ["node", "example/server.js", "api"]
   web:
     build:
       context: ../
-      dockerfile: example/Dockerfile
-    ports: 
-      - "8080:8080"
+      dockerfile: example/Dockerfile-node
     restart: always
+    environment: 
+      ROADS_ENV: "docker"
     depends_on:
       - "api"
     command: ["node", "example/server.js", "web"]
-  #nginx:
-  #  image: nginx
-  #  restart: always
-  #  ports:
-  #    - "80:80"
-  #    - "443:443"
-  #  volumes:
-  #    - config/nginx.conf:/etc/nginx/nginx.conf:ro
-  #    - config/logs/nginx:/var/logs
-  #  depends_on:
-  #    - "web"
-  #    - "api"
+  nginx:
+    build:
+      context: ../
+      dockerfile: example/Dockerfile-nginx
+    image: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - "web"
+      - "api"

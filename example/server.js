@@ -1,7 +1,8 @@
 "use strict";
 
 let roadsStarter = require('../index.js');
-let config = require('../config.js')(__dirname + '/config');
+const ENVIRONMENT = process.env.ROADS_ENV || 'default';
+let config = require('../config.js')(__dirname + '/config', ENVIRONMENT);
 const Handlebars = require('handlebars');
 let fs = require('fs');
 
@@ -40,8 +41,13 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
     * BASIC ROUTES
     */
     privateWeb.addRoadsUserFunctionality();
-    privateWeb.addStaticFolder('/static/js', __dirname + '/static/js', 'application/javascript');
-    privateWeb.addStaticFolder('/static/css', __dirname + '/static/css', 'text/css');
+    
+    if (ENVIRONMENT != "docker") {
+        // docker sends these through nginx
+        privateWeb.addStaticFolder('/static/js', __dirname + '/static/js', 'application/javascript');
+        privateWeb.addStaticFolder('/static/css', __dirname + '/static/css', 'text/css');
+    }
+
     privateWeb.addRoutes(__dirname + '/publicRoutes.js');
     privateWeb.addRoutes(__dirname + '/privateRoutes.js');
 

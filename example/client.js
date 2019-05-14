@@ -20,7 +20,8 @@ require('./publicRoutes.js')(router, {
 	hostname: process.env.ROADS_HOSTNAME,
 	port: process.env.ROADS_PORT,
 	cognitoClientId: process.env.ROADS_COGNITO_CLIENT_ID,
-	cognitoUrl: process.env.ROADS_COGNITO_URL
+	cognitoUrl: process.env.ROADS_COGNITO_URL,
+	cognitoRedirectUri: process.env.ROADS_COGNITO_REDIRECT_URI
 });
 
 /*road.request('GET', '/')
