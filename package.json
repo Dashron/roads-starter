@@ -1,8 +1,7 @@
 {
   "name": "roads-starter",
-  "private": true,
-  "version": "1.0.0-alpha.1",
-  "description": "",
+  "version": "1.0.0-beta.2",
+  "description": "A starter project for building websites with roads and roads-api",
   "main": "api.js",
   "scripts": {
     "test": "jest tests",
@@ -14,20 +13,17 @@
     "url": "git+https://github.com/Dashron/roads-starter.git"
   },
   "author": "Aaron Hedges <aaron@dashron.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Dashron/roads-starter/issues"
   },
   "homepage": "https://github.com/Dashron/roads-starter#readme",
   "dependencies": {
-    "@google-cloud/error-reporting": "^0.6.3",
-    "@google-cloud/logging": "^4.5.2",
     "handlebars": "^4.1.2",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.0",
     "moment": "2.24.0",
     "pg": "7.10.0",
-    "remarkable": "1.7.1",
     "roads": "5.0.0-beta.4",
     "roads-api": "0.4.6",
     "roads-req": "0.2.1",
