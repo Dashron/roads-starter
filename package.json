@@ -1,6 +1,6 @@
 {
   "name": "roads-starter",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "A starter project for building websites with roads and roads-api",
   "main": "api.js",
   "scripts": {
