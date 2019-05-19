@@ -136,12 +136,6 @@ module.exports = class APIProject {
     setup() {
         return this.connection.sync({
             //"force": true
-        })
-        .then(function() {
-            return module.exports.getConnectedClient();
-        })
-        .catch(function (err) {
-                throw err;
         });
     }
 }
