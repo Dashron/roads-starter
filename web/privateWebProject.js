@@ -210,21 +210,28 @@ module.exports = class PrivateWebProject {
                 "refreshToken": authResponse.body.refresh_token
             }, {});
 
-            let response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
-    
-            let token = jwt.sign({
-                val: apiUser.id
-            }, config.secret, {
-                expiresIn: '1d',
-                algorithm: 'HS256'
-            });
-    
-            response.setCookie(config.authCookieName, token, {
-                expires: moment().add(1, 'd').toDate(),
-                secure: config.secure,
-                domain: config.hostname,
-                path: '/'
-            });
+            let response = new this.Response('Unexpected error when updating user login details', 500);
+
+            if (apiUser.status === 200) {
+                response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
+
+                let token = jwt.sign({
+                    val: apiUser.body.id
+                }, config.secret, {
+                    expiresIn: '1d',
+                    algorithm: 'HS256'
+                });
+        
+                response.setCookie(config.authCookieName, token, {
+                    expires: moment().add(1, 'd').toDate(),
+                    secure: config.secure,
+                    domain: config.hostname,
+                    path: '/'
+                });
+            } else {
+                // todo: this needs better error handling
+                console.log(apiUser);
+            }
 
             return response;
         });
@@ -233,7 +240,7 @@ module.exports = class PrivateWebProject {
             let response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
     
             response.setCookie(this.config.authCookieName, null, {
-                expires: moment().add(1, 'd').toDate(),
+                expires: moment().toDate(),
                 secure: this.config.secure,
                 domain: this.config.hostname
             });

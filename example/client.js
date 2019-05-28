@@ -23,17 +23,3 @@ require('./publicRoutes.js')(router, {
 	cognitoUrl: process.env.ROADS_COGNITO_URL,
 	cognitoRedirectUri: process.env.ROADS_COGNITO_REDIRECT_URI
 });
-
-/*road.request('GET', '/')
-	.then(function (response) {
-		console.log(response);
-	});
-
-road.request('GET', '/test')
-	.then(function (response) {
-		console.log(response);
-	})
-	.catch(function (err) {
-		console.log('[' + err.code + ']' + err.message);
-		console.log(err.stack);
-	});*/

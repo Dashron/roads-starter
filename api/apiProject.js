@@ -68,8 +68,7 @@ module.exports = class APIProject {
                     rejectUnauthorized: true,
                     ca: fs.readFileSync(this.config.PGSSL).toString()
                 },
-            },
-            operatorsAliases: false
+            }
         });
     }
 

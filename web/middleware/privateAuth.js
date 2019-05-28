@@ -14,6 +14,8 @@ module.exports = (authCookieName, secret) => {
 
                 if (decoded) {
                     this.loggedIn = true;
+                    this.authToken = this.cookies[authCookieName];
+                    this.authDecoded = decoded;
                 }
             } catch (e) {
                 console.log('tokenResolver', e);
