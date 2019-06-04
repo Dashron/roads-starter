@@ -1,6 +1,5 @@
 "use strict";
 
-const Logger = require('../logger.js');
 let Router = require('roads-api').Router;
 let Server = require('roads-server').Server;
 let Sequelize = require('sequelize');
@@ -29,8 +28,8 @@ function hasAllKeys(check, keys) {
 }
 
 module.exports = class APIProject {
-    constructor (config) {
-        if (!hasAllKeys(config, ['logger', 'hostname', 'protocol', 'corsHeaders', 'corsMethods',
+    constructor (config, logger) {
+        if (!hasAllKeys(config, ['hostname', 'protocol', 'corsHeaders', 'corsMethods',
                 'PGDATABASE', 'PGUSER', 'PGPASSWORD', 'PGHOST', 'PGPORT', 'PGSSL'
             ])) {
 
@@ -39,12 +38,21 @@ module.exports = class APIProject {
         
         this.road = new Road();
         this.config = config;
-        this.logger = Logger.createLogger(config.logger);
+        this.logger = logger;
 
         let hostname = this.config.hostname;
         let protocol = this.config.protocol;
 
-        this.road.use(Logger.middleware('api-server'));
+        let _self = this;
+        this.road.use(function (method, url, body, headers, next) {
+            _self.logger.info({
+                method: method,
+                url: url
+            });
+            
+            return next();
+        });
+
         this.road.use(middleware.cors({
             validOrigins: [protocol + hostname],
             requestHeaders: this.config.corsHeaders,
@@ -81,14 +89,14 @@ module.exports = class APIProject {
     }
 
     addRoadsUserEndpoints() {
-        if (!hasAllKeys(this.config, ['secret'])) {
-            
-        throw new Error('Mising config key.');
-    }
-        this.addModel('./users/userModel.js');
+        if (!hasAllKeys(this.config, ['secret', 'cognitoUrl'])) {
+            throw new Error('Mising config key.');
+        }
 
+        this.addModel('./users/userModel.js');
+        
         // I don't like passing in the connection like this
-        this.addResource('/users/{remote_id}', require('./users/userResource.js')(this.connection, this.config.secret), {
+        this.addResource('/users/{remote_id}', require('./users/userResource.js')(this.connection, this.logger, this.config.secret, this.config.cognitoUrl), {
             urlParams: {
                 schema: {
                     remote_id: {
@@ -128,13 +136,11 @@ module.exports = class APIProject {
         }, options);
         
         server.listen(this.config.port, () => {
-            log.log('listening at ' + this.config.hostname + ':' + this.config.port);
+            log.info('listening at ' + this.config.hostname + ':' + this.config.port);
         });
     }
 
     setup() {
-        return this.connection.sync({
-            //"force": true
-        });
+        return this.connection.sync();
     }
 }

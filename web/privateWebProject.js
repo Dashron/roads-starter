@@ -1,7 +1,5 @@
 "use strict";
 
-const Logger = require('../logger.js');
-const log = Logger.createLogger('web');
 var Server = require('roads-server').Server;
 
 const fs = require('fs');
@@ -10,7 +8,6 @@ const roadsReq = require('roads-req');
 const qs = require('querystring');
 const jwt = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
-const crypto = require('crypto');
 const path = require('path');
 
 let {
@@ -20,22 +17,32 @@ let {
 } = require('roads');
 
 module.exports = class PrivateWebProject {
-    constructor (config, layoutWrapper, pageNotFoundHtml) {
+    constructor (config, logger, layoutWrapper, pageNotFoundHtml) {
         if (!this.hasAllKeys(config, ['port', 'hostname', 'authCookieName', 'secure', 'secret', 'cognitoJwks', 'cognitoClientId', 'cognitoClientSecret'])) {
             throw new Error('Mising config key.');
         }
 
         this.road = new Road();
         this.config = config;
+        this.logger = logger;
 
-        this.road.use(Logger.middleware('web-server'));
+        let _self = this;
+        this.road.use(function (method, url, body, headers, next) {
+            _self.logger.info({
+                method: method,
+                url: url
+            });
+            
+            return next();
+        });
+
         this.road.use(middleware.killSlash);
         this.road.use(middleware.cookie());
         this.road.use(require('./addLayout.js')(layoutWrapper, pageNotFoundHtml));
         this.road.use(middleware.setTitle);
         this.road.use(middleware.parseBody);
         this.road.use(require('./middleware/api.js')(config.api.secure, config.api.hostname, config.api.port));
-        this.road.use(require('./middleware/privateAuth.js')(config.authCookieName, config.secret));
+        this.road.use(require('./middleware/privateAuth.js')(config.authCookieName, this.logger, config.secret));
 
         this.router = new middleware.SimpleRouter(this.road);
     }
@@ -101,7 +108,7 @@ module.exports = class PrivateWebProject {
 
         for (let i = 0; i < files.length; i++) {
 
-            console.log('adding static file ' + files[i] + ' to ' + rootPath + urlSeparator + files[i]);
+            this.logger.info('adding static file ' + files[i] + ' to ' + rootPath + urlSeparator + files[i]);
             this.addStaticFile(rootPath + urlSeparator + files[i], path.format({
                 dir: folderPath,
                 base: files[i]
@@ -119,6 +126,7 @@ module.exports = class PrivateWebProject {
             };
         }
 
+        let log = this.logger;
         let server = new Server(this.road, function (err) {
             log.error(err);
             
@@ -134,7 +142,7 @@ module.exports = class PrivateWebProject {
         }, options);
 
         server.listen(this.config.port, () => {
-            log.log('listening at ' + this.config.hostname + ':' + this.config.port);
+            log.info('listening at ' + this.config.hostname + ':' + this.config.port);
         });
     }
 
@@ -229,8 +237,7 @@ module.exports = class PrivateWebProject {
                     path: '/'
                 });
             } else {
-                // todo: this needs better error handling
-                console.log(apiUser);
+                project.logger.warn(apiUser);
             }
 
             return response;

@@ -2,7 +2,7 @@
 
 var jwt = require('jsonwebtoken');
 
-module.exports = (authCookieName, secret) => {
+module.exports = (authCookieName, logger, secret) => {
     return function (method, path, body, headers, next) {
         this.loggedIn = false;
         
@@ -18,7 +18,7 @@ module.exports = (authCookieName, secret) => {
                     this.authDecoded = decoded;
                 }
             } catch (e) {
-                console.log('tokenResolver', e);
+                logger.error(e);
             }
         }
 

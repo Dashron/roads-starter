@@ -36,7 +36,6 @@ module.exports = {
         "PGDATABASE": "",
         "PGHOST": "",
         "PGSSL": "",
-        "logger": "",
         "secret": ""
     }
 };

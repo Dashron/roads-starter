@@ -5,16 +5,18 @@ const ENVIRONMENT = process.env.ROADS_ENV || 'default';
 let config = require('../config.js')(__dirname + '/config', ENVIRONMENT);
 const Handlebars = require('handlebars');
 let fs = require('fs');
+let apiLogger = require('./logger.js').createLogger('api-server');
+let webLogger = require('./logger.js').createLogger('web-server');
 
 if (process.argv.length < 3 || process.argv[2] === "api") {
-    console.log('starting api server');
-    let api = new roadsStarter.APIProject(config.api);
+    apiLogger.info('starting api server');
+    let api = new roadsStarter.APIProject(config.api, apiLogger);
     api.addRoadsUserEndpoints();
     api.start();
 }
 
 if (process.argv.length < 3 || process.argv[2] === "web") {
-    console.log('starting web server');
+    webLogger.info('starting web server');
     /*
     * LAYOUT
     */ 
@@ -32,7 +34,7 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
     /*
     * PROJECT
     */
-    let privateWeb = new roadsStarter.PrivateWebProject(config.web, layout, () => {
+    let privateWeb = new roadsStarter.PrivateWebProject(config.web, webLogger, layout, () => {
         return layout(pageNotFoundTemplate(), 'Page not found');
     });
 

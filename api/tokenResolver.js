@@ -1,7 +1,7 @@
 "use strict";
 let jwt = require('jsonwebtoken');
 
-module.exports = (sequelize, secret) => {
+module.exports = (sequelize, logger, secret) => {
     return async function (token) {
         try {
             let decoded = jwt.verify(token, secret, {
@@ -22,7 +22,7 @@ module.exports = (sequelize, secret) => {
                 return false;
             }
         } catch (e) {
-            console.log('tokenResolver', e);
+            logger.error(e);
         }
 
         return null;

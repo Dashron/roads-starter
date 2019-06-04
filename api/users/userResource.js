@@ -6,11 +6,11 @@ const { MEDIA_JSON, MEDIA_JSON_MERGE, AUTH_BEARER } = require('roads-api').CONST
 const roadsReq = require('roads-req');
 
 // Not a big fan of this method for passing the connection
-module.exports = function (dbConnection, secret) {
+module.exports = function (dbConnection, logger, secret, cognitoUrl) {
     return class UserResource extends Resource {
         constructor() {
             super({
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, secret) },
+                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, logger, secret) },
                 responseMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 defaultResponseMediaType: MEDIA_JSON,
                 defaultRequestMediaType: MEDIA_JSON,
@@ -18,7 +18,7 @@ module.exports = function (dbConnection, secret) {
             }, ["get"]);
 
             this.addAction("fullReplace", {
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, secret) },
+                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, logger, secret) },
                 requestMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 responseMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 defaultRequestMediaType: MEDIA_JSON,
@@ -29,7 +29,7 @@ module.exports = function (dbConnection, secret) {
             });
             
             this.addAction("partialEdit", {
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, secret) },
+                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, logger, secret) },
                 requestMediaTypes: { [MEDIA_JSON_MERGE]: require('./userRepresentation.js') },
                 defaultRequestMediaType: MEDIA_JSON_MERGE,
                 authRequired: true
@@ -93,7 +93,7 @@ module.exports = function (dbConnection, secret) {
                 request: {
                     method: 'GET',
                     protocol: 'https:',
-                    hostname: 'dashron.auth.us-east-1.amazoncognito.com',
+                    hostname: cognitoUrl,
                     path: '/oauth2/userInfo',
                     headers: {
                         'content-type': 'application/x-www-form-urlencoded',
