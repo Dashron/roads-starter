@@ -22,9 +22,7 @@ module.exports = (sequelize, logger, secret) => {
                 return false;
             }
         } catch (e) {
-            logger.error(e);
+            return false;
         }
-
-        return null;
     };
 };

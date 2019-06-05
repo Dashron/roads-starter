@@ -7,7 +7,9 @@ const Handlebars = require('handlebars');
 module.exports = function (router, config) {
     router.addRoute('GET', '/login', function (url, body, headers) {
         let loginPage = Handlebars.compile(loginTemplate);
+        
         let responseBody = loginPage({
+            loggedIn: this.loggedIn,
             cognitoUrl: config.cognitoUrl,
             redirectUrl: config.cognitoRedirectUri,
             clientId: config.cognitoClientId
