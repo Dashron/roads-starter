@@ -88,6 +88,10 @@ module.exports = class APIProject {
         this.router.addResource(path, resource, templateSchema);
     }
 
+    addTokenResolver(resolver) {
+        this.tokenResolver = resolver;
+    }
+
     addRoadsUserEndpoints() {
         if (!hasAllKeys(this.config, ['secret', 'cognitoUrl'])) {
             throw new Error('Mising config key.');
@@ -96,7 +100,7 @@ module.exports = class APIProject {
         this.addModel('./users/userModel.js');
         
         // I don't like passing in the connection like this
-        this.addResource('/users/{remote_id}', require('./users/userResource.js')(this.connection, this.logger, this.config.secret, this.config.cognitoUrl), {
+        this.addResource('/users/{remote_id}', require('./users/userResource.js')(this.connection, this.logger, this.tokenResolver, this.config.cognitoUrl), {
             urlParams: {
                 schema: {
                     remote_id: {

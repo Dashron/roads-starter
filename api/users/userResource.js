@@ -6,11 +6,11 @@ const { MEDIA_JSON, MEDIA_JSON_MERGE, AUTH_BEARER } = require('roads-api').CONST
 const roadsReq = require('roads-req');
 
 // Not a big fan of this method for passing the connection
-module.exports = function (dbConnection, logger, secret, cognitoUrl) {
+module.exports = function (dbConnection, logger, tokenResolver, cognitoUrl) {
     return class UserResource extends Resource {
         constructor() {
             super({
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, logger, secret) },
+                authSchemes: { [AUTH_BEARER]: tokenResolver },
                 responseMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 defaultResponseMediaType: MEDIA_JSON,
                 defaultRequestMediaType: MEDIA_JSON,
@@ -18,7 +18,7 @@ module.exports = function (dbConnection, logger, secret, cognitoUrl) {
             }, ["get"]);
 
             this.addAction("fullReplace", {
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, logger, secret) },
+                authSchemes: { [AUTH_BEARER]: tokenResolver },
                 requestMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 responseMediaTypes: { [MEDIA_JSON]: require('./userRepresentation.js') },
                 defaultRequestMediaType: MEDIA_JSON,
@@ -29,14 +29,14 @@ module.exports = function (dbConnection, logger, secret, cognitoUrl) {
             });
             
             this.addAction("partialEdit", {
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js')(dbConnection, logger, secret) },
+                authSchemes: { [AUTH_BEARER]: tokenResolver },
                 requestMediaTypes: { [MEDIA_JSON_MERGE]: require('./userRepresentation.js') },
                 defaultRequestMediaType: MEDIA_JSON_MERGE,
                 authRequired: true
             });
 
             this.addAction("delete", {
-                authSchemes: { [AUTH_BEARER]: require('../tokenResolver.js') },
+                authSchemes: { [AUTH_BEARER]: tokenResolver },
                 authRequired: true
             });
         }

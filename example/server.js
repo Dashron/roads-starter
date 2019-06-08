@@ -11,6 +11,8 @@ let webLogger = require('./logger.js').createLogger('web-server');
 if (process.argv.length < 3 || process.argv[2] === "api") {
     apiLogger.info('starting api server');
     let api = new roadsStarter.APIProject(config.api, apiLogger);
+    let tokenResolver = require('./tokenResolver.js')(api.connection, apiLogger, config.api.secret);
+    api.addTokenResolver(tokenResolver);
     api.addRoadsUserEndpoints();
     api.start();
 }
