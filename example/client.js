@@ -9,6 +9,7 @@
 
 var roads = require('roads');
 var road = new roads.Road();
+require("regenerator-runtime/runtime");
 
 // Currently I see two choices
 // 1. You don't attach PJAX if logged in, forcing direct calls to the webserver and rendering it server side.
