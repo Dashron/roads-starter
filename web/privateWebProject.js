@@ -162,7 +162,7 @@ module.exports = class PrivateWebProject {
                 request: {
                     method: 'POST',
                     protocol: 'https:',
-                    hostname: 'dashron.auth.us-east-1.amazoncognito.com',
+                    hostname: config.cognitoUrl,
                     path: '/oauth2/token',
                     headers: {
                         'content-type': 'application/x-www-form-urlencoded'

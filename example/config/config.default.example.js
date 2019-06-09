@@ -5,6 +5,7 @@ module.exports = {
         "cognitoUrl": "",
         "cognitoClientId": "",
         "cognitoClientSecret": "",
+        // cognitoJwks is located at https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json
         "cognitoJwks": {},
         "secure": true,
         "secret": "",
