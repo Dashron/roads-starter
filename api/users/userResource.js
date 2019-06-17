@@ -64,7 +64,7 @@ module.exports = function (dbConnection, logger, tokenResolver, cognitoUrl) {
 
         get (models, requestBody, auth) {
             // You can only view your own user page
-            if (!auth || models.id != auth.id) {
+            if (!auth || auth.id != models.id) {
                 throw new ForbiddenError('You do not have permission to view this resource');
             }
         }
@@ -72,12 +72,12 @@ module.exports = function (dbConnection, logger, tokenResolver, cognitoUrl) {
         partialEdit (models, requestBody, auth) {
             // auth is valid if we get to this point, but I'm checking for auth here to protect against bugs
             // this would be a good location to check auth roles
-            if (auth) {
-                requestBody.applyEdit(models, auth);
-                return models.save();
-            } else {
+            if (!auth || auth.id != models.id) {
                 throw new ForbiddenError('You do not have permission to manipulate this resource');
             }
+
+            requestBody.applyEdit(models, auth);
+            return models.save();
         }
 
 
@@ -113,12 +113,12 @@ module.exports = function (dbConnection, logger, tokenResolver, cognitoUrl) {
         delete (models, requestBody, auth) {
             // auth is valid if we get to this point, but I'm checking for auth here to protect against bugs
             // this would be a good location to check auth roles
-            if (auth) {
-                models.active = 0;
-                return models.save();
-            } else {
+            if (!auth || auth.id != models.id) {
                 throw new ForbiddenError('You do not have permission to manipulate this resource');
             }
+
+            models.active = 0;
+            return models.save();
         }
     };
 };

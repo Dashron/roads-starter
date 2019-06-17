@@ -17,8 +17,8 @@ let {
 } = require('roads');
 
 module.exports = class PrivateWebProject {
-    constructor (config, logger, layoutWrapper, pageNotFoundHtml) {
-        if (!this.hasAllKeys(config, ['port', 'hostname', 'authCookieName', 'secure', 'secret', 'cognitoJwks', 'cognitoClientId', 'cognitoClientSecret'])) {
+    constructor (config, logger, layoutWrapper) {
+        if (!this.hasAllKeys(config, ['authCookieName', 'secure', 'secret', 'api'])) {
             throw new Error('Mising config key.');
         }
 
@@ -38,7 +38,8 @@ module.exports = class PrivateWebProject {
 
         this.road.use(middleware.killSlash);
         this.road.use(middleware.cookie());
-        this.road.use(require('./addLayout.js')(layoutWrapper, pageNotFoundHtml));
+        this.road.use(require('./middleware/addLayout.js')(layoutWrapper));
+        this.road.use(middleware.emptyTo404);
         this.road.use(middleware.setTitle);
         this.road.use(middleware.parseBody);
         this.road.use(require('./middleware/api.js')(config.api.secure, config.api.hostname, config.api.port));
@@ -148,6 +149,11 @@ module.exports = class PrivateWebProject {
 
     addRoadsUserFunctionality() {
         let config = this.config;
+        if (!this.hasAllKeys(config, ['port', 'hostname', 'authCookieName', 'secure', 'secret', 'cognitoJwks', 'cognitoClientId', 'cognitoClientSecret'])) {
+            throw new Error('Mising config key.');
+        }
+        
+
         let project = this;
 
         this.router.addRoute('GET', '/login/redirect', async function (url, body, headers) {
@@ -224,7 +230,7 @@ module.exports = class PrivateWebProject {
                 response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
 
                 let token = jwt.sign({
-                    val: apiUser.body.id
+                    val: apiUser.body.remoteId
                 }, config.secret, {
                     expiresIn: '1d',
                     algorithm: 'HS256'
@@ -242,14 +248,14 @@ module.exports = class PrivateWebProject {
 
             return response;
         });
-    
+    // todo: wtf why is this GET. Don't have this bet GET
         this.router.addRoute('GET', '/signout', function (url, body, headers) {
             let response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
     
-            response.setCookie(this.config.authCookieName, null, {
+            response.setCookie(config.authCookieName, null, {
                 expires: moment().toDate(),
-                secure: this.config.secure,
-                domain: this.config.hostname
+                secure: config.secure,
+                domain: config.hostname
             });
     
             return response;

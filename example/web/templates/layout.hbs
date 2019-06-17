@@ -9,6 +9,9 @@
     <header>
         <div id="header-content">
             <a id="root-link" href="/">Home</a>
+            {{#if loggedIn}}
+                <a href="/signout">Signout</a>
+            {{/if}}
         </div>
     </header>
     <div id="main-body">

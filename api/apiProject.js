@@ -29,7 +29,7 @@ function hasAllKeys(check, keys) {
 
 module.exports = class APIProject {
     constructor (config, logger) {
-        if (!hasAllKeys(config, ['hostname', 'protocol', 'corsHeaders', 'corsMethods',
+        if (!hasAllKeys(config, ['hostname', 'protocol', 'corsOrigins', 'corsHeaders', 'corsMethods',
                 'PGDATABASE', 'PGUSER', 'PGPASSWORD', 'PGHOST', 'PGPORT', 'PGSSL'
             ])) {
 
@@ -39,9 +39,6 @@ module.exports = class APIProject {
         this.road = new Road();
         this.config = config;
         this.logger = logger;
-
-        let hostname = this.config.hostname;
-        let protocol = this.config.protocol;
 
         let _self = this;
         this.road.use(function (method, url, body, headers, next) {
@@ -54,7 +51,7 @@ module.exports = class APIProject {
         });
 
         this.road.use(middleware.cors({
-            validOrigins: [protocol + hostname],
+            validOrigins: this.config.corsOrigins,
             requestHeaders: this.config.corsHeaders,
             validMethods: this.config.corsMethods,
             supportsCredentials: true

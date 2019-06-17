@@ -19,6 +19,9 @@ require('roads').build(__dirname + '/client.js', __dirname + '/static/js/client.
         ROADS_COGNITO_CLIENT_ID: config.web.cognitoClientId,
         ROADS_COGNITO_URL: config.web.cognitoUrl,
         ROADS_COGNITO_REDIRECT_URI: config.web.cognitoRedirectUri,
-        ROADS_AUTH_COOKIE_NAME: config.web.authCookieName
+        ROADS_AUTH_COOKIE_NAME: config.web.authCookieName,
+        ROADS_EXTERNAL_API_SECURE: config.web.api.external.secure,
+		ROADS_EXTERNAL_API_HOSTNAME: config.web.api.external.hostname,
+		ROADS_EXTERNAL_API_PORT: config.web.api.external.port,
     }
 });

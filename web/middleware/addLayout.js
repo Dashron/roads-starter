@@ -8,7 +8,7 @@
 
 let Roads = require('roads');
 
-module.exports = function (wrapLayout, pageNotFound) {
+module.exports = function (wrapLayout) {
     /**
      * This middleware wraps the response in a standard HTML layout. It looks for three fields in the request context.
      * - _page_title - The title of the page
@@ -23,20 +23,8 @@ module.exports = function (wrapLayout, pageNotFound) {
     return function (method, url, body, headers, next) {
         return next()
             .then((response) => {
-                if (!response) {
-                    let msg = 'Page not found';
-                    let err = new Roads.HttpError(msg, Roads.HttpError.not_found);
-                    
-                    if (this.ignore_layout) {
-                        err.htmlMessage = msg;
-                    } else {
-                        err.htmlMessage = pageNotFound();
-                    }
-                    throw err;
-                }
-
                 if (!this.ignore_layout) {
-                    response.body = wrapLayout(response.body, this._page_title ? this._page_title : '');
+                    response.body = wrapLayout(response.body, this._page_title ? this._page_title : '', this);
                 }
 
                 return response;

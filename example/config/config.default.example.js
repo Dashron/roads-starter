@@ -7,6 +7,7 @@ module.exports = {
         "cognitoClientSecret": "",
         // cognitoJwks is located at https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json
         "cognitoJwks": {},
+        "cognitoRedirectUri": '',
         "secure": true,
         "secret": "",
         "authCookieName": "",
@@ -18,7 +19,12 @@ module.exports = {
         "api": {
             "hostname": "api",
             "secure": false,
-            "port": 8081
+            "port": 8081,
+            "external": {
+                "hostname": "",
+                "secure": true,
+                "port": 443,
+            }
         },
         "credentials": {
             "privateKey": "",
@@ -31,6 +37,7 @@ module.exports = {
         "port": 8081,
         "corsMethods": ["GET", "PUT", "POST", "DELETE", "PATCH"],
         "corsHeaders": ["content-type", "authorization"],
+        "corsOrigins": [],
         "PGUSER": "",
         "PGPASSWORD": "",
         "PGPORT": "",

@@ -6,7 +6,12 @@ module.exports = {
         "api": {
             "hostname": "api",
             "secure": false,
-            "port": 80
+            "port": 80,
+            "external": {
+                "hostname": "",
+                "secure": true,
+                "port": 443,
+            }
         }
     },
     "api": {

@@ -1,0 +1,18 @@
+{{#with user}}
+<form id="editProfile" method="POST" action="/profile" data-roads-pjax="form">
+    <label>ID:</label><span>{{id}}</span><br />
+    <label>Created Time:</label><span>{{createdTime}}</span><br />
+    <label>Access Token:</label><span>{{accessToken}}</span><br />
+    <!-- This is a proof of concept. There's no real reason you would want to update the refresh token manually !-->
+    <label>Refresh Token:</label><input type="text" id="refreshToken" name="refreshToken" value="{{refreshToken}}"><br />
+    <label>Remote ID:</label><span>{{remoteId}}</span><br />
+    <label>Expires In:</label><span>{{expiresIn}}</span><br />
+    <label for="active">Active?</label><span>{{active}}</span><br />
+    {{! Admins might want to change active state, but you probably shouldn't change your own.}}
+    {{! <select id="active">
+        <option value="true" {{#if active selected{{/if >Yes</option>
+        <option value="false" {{#unless active selected{{/unless >No</option>
+    </select><br />}}
+    <input type="submit" id="performEditProfile" value="Edit Profile" data-roads-pjax="submit">
+</form>
+{{/with}}

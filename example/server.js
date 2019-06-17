@@ -11,7 +11,7 @@ let webLogger = require('./logger.js').createLogger('web-server');
 if (process.argv.length < 3 || process.argv[2] === "api") {
     apiLogger.info('starting api server');
     let api = new roadsStarter.APIProject(config.api, apiLogger);
-    let tokenResolver = require('./tokenResolver.js')(api.connection, apiLogger, config.api.secret);
+    let tokenResolver = require(__dirname + '/tokenResolver.js')(api.connection, apiLogger, config.api.secret);
     api.addTokenResolver(tokenResolver);
     api.addRoadsUserEndpoints();
     api.start();
@@ -22,14 +22,15 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
     /*
     * LAYOUT
     */ 
-    let layoutTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/templates/layout.hbs').toString('utf-8'));
-    let pageNotFoundTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/templates/404.hbs').toString('utf-8'));
+    let layoutTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/web/templates/layout.hbs').toString('utf-8'));
+    let pageNotFoundTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/web/templates/404.hbs').toString('utf-8'));
 
-    let layout = (body, title) => {
+    let layout = (body, title, context) => {
         return layoutTemplate({
             title: title,
             body: body,
-            config: config.web.layoutConstants
+            config: config.web.layoutConstants,
+            loggedIn: context ? context.loggedIn : false
         });
     };
 
@@ -51,8 +52,8 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
         privateWeb.addStaticFolder('/static/css', __dirname + '/static/css', 'text/css');
     }
 
-    privateWeb.addRoutes(__dirname + '/publicRoutes.js');
-    privateWeb.addRoutes(__dirname + '/privateRoutes.js');
+    privateWeb.addRoutes(__dirname + '/web/publicRoutes.js');
+    privateWeb.addRoutes(__dirname + '/web/privateRoutes.js');
 
     /*
     * START PROJECT

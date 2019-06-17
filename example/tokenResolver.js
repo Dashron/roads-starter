@@ -11,7 +11,7 @@ module.exports = (sequelize, logger, secret) => {
             if (decoded) {
                 let user = await sequelize.models.user.findOne({
                     where: {
-                        id: decoded.val
+                        remoteId: decoded.val
                     }
                 });
 
