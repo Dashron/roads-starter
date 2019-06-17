@@ -20,7 +20,9 @@ module.exports = class PrivateWebProject {
         this.road.use(function (method, url, body, headers, next) {
             _self.logger.info({
                 method: method,
-                url: url
+                url: url,
+                body: body,
+                headers: headers
             });
             
             return next();

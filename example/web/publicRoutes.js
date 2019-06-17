@@ -21,6 +21,7 @@ module.exports = function (router, config) {
     });
 
     router.addRoute('GET', '/profile', async function (url, body, headers) {
+        this.setTitle('Your Profile');
         let profilePage = Handlebars.compile(profileTemplate);
 
         if (!this.loggedIn || !this.authDecoded || !this.authDecoded.val) {
@@ -60,7 +61,7 @@ module.exports = function (router, config) {
         }
 
         let editResponse = await this.api('PATCH', '/users/' + this.authDecoded.val, {
-            refreshToken: body.refreshToken
+            refreshToken: this.body.refreshToken
         }, {
             "content-type": "application/json"
         });
