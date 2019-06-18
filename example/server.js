@@ -11,7 +11,7 @@ let webLogger = require('./logger.js').createLogger('web-server');
 if (process.argv.length < 3 || process.argv[2] === "api") {
     apiLogger.info('starting api server');
     let api = new roadsStarter.APIProject(config.api, apiLogger);
-    let tokenResolver = require(__dirname + '/tokenResolver.js')(api.connection, apiLogger, config.api.secret);
+    let tokenResolver = require(__dirname + '/api/tokenResolver.js')(api.connection, apiLogger, config.api.secret);
     api.addTokenResolver(tokenResolver);
     api.addRoadsUserEndpoints();
     api.start();
@@ -40,11 +40,6 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
     let privateWeb = new roadsStarter.PrivateWebProject(config.web, webLogger, layout, () => {
         return layout(pageNotFoundTemplate(), 'Page not found');
     });
-
-    /*
-    * BASIC ROUTES
-    */
-    privateWeb.addRoadsUserFunctionality();
     
     if (ENVIRONMENT != "docker") {
         // docker sends these through nginx
@@ -52,6 +47,11 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
         privateWeb.addStaticFolder('/static/css', __dirname + '/static/css', 'text/css');
     }
 
+    let profileTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/web/templates/profile.hbs').toString('utf-8'));
+    let loginUrlTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/web/templates/loginUrl.hbs').toString('utf-8'));
+
+    privateWeb.addRoutes(require('../web/publicUserRoutes.js')(profileTemplate,loginUrlTemplate));
+    privateWeb.addRoutes(require('../web/privateUserRoutes.js'));
     privateWeb.addRoutes(__dirname + '/web/publicRoutes.js');
     privateWeb.addRoutes(__dirname + '/web/privateRoutes.js');
 

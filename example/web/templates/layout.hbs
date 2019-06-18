@@ -10,7 +10,9 @@
         <div id="header-content">
             <a id="root-link" href="/">Home</a>
             {{#if loggedIn}}
-                <a href="/signout">Signout</a>
+                <form method="POST" action="/signout">
+                    <input type="submit" value="Signout">
+                </form>
             {{/if}}
         </div>
     </header>
