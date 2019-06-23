@@ -1,2 +1,2 @@
-node buildClient.js
+node web/buildClient.js
 docker-compose $@

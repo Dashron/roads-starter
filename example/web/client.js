@@ -1,4 +1,6 @@
-let ClientProject = require('../web/clientProject.js');
+"use strict";
+
+let ClientProject = require('../../web/clientProject.js');
 //let ClientProject = require('roads-starter/clientProject');
 let fs = require('fs');
 let handlebars = require('handlebars');
@@ -23,4 +25,4 @@ let client = new ClientProject({
 let loginTemplate = fs.readFileSync('./web/templates/loginUrl.hbs').toString('utf-8');
 let profileTemplate = fs.readFileSync('./web/templates/profile.hbs').toString('utf-8');
 
-client.addRoutes(require('../web/publicUserRoutes.js')(handlebars.compile(profileTemplate), handlebars.compile(loginTemplate)));
+client.addRoutes(require('../../web/publicUserRoutes.js')(handlebars.compile(profileTemplate), handlebars.compile(loginTemplate)));

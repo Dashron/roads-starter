@@ -3,6 +3,7 @@
 let roadsStarter = require('../index.js');
 const ENVIRONMENT = process.env.ROADS_ENV || 'default';
 let config = require('../config.js')(__dirname + '/config', ENVIRONMENT);
+
 const Handlebars = require('handlebars');
 let fs = require('fs');
 let apiLogger = require('./logger.js').createLogger('api-server');
@@ -43,8 +44,8 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
     
     if (ENVIRONMENT != "docker") {
         // docker sends these through nginx
-        privateWeb.addStaticFolder('/static/js', __dirname + '/static/js', 'application/javascript');
-        privateWeb.addStaticFolder('/static/css', __dirname + '/static/css', 'text/css');
+        privateWeb.addStaticFolder('/static/js', __dirname + '/web/static/js', 'application/javascript');
+        privateWeb.addStaticFolder('/static/css', __dirname + '/web/static/css', 'text/css');
     }
 
     let profileTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/web/templates/profile.hbs').toString('utf-8'));

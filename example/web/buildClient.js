@@ -8,7 +8,7 @@
  */
 
 const ENVIRONMENT = process.env.ROADS_ENV || 'default';
-let config = require('../config.js')(__dirname + '/config', ENVIRONMENT);
+let config = require('../../config.js')(__dirname + '/../config', ENVIRONMENT);
 
 require('roads').build(__dirname + '/client.js', __dirname + '/static/js/client.brws.js', {
     use_sourcemaps: true,
