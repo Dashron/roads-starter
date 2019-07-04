@@ -11,8 +11,8 @@ module.exports = (profilePage, loginPage) => {
             let userResponse = await this.api('GET', '/users/' + this.authDecoded.val);
 
             if (userResponse.status !== 200) {
-                // todo: this should be a thrown 500 error
-                throw new roads.HttpError('Unexpected Error', roads.HttpError.internal_server_error);
+                // TODO: configurable response template
+                return new this.Response('Unexpected error', 500);
             }
 
             let responseBody = profilePage({
@@ -28,8 +28,8 @@ module.exports = (profilePage, loginPage) => {
             }
 
             if (!this.body || !this.body.refreshToken) {
-                // todo: this should be a thrown 400 error
-                return new this.Response('', 400);
+                // TODO: configurable response template
+                return new this.Response('Invalid Request', 400);
             }
 
             let editResponse = await this.api('PATCH', '/users/' + this.authDecoded.val, {
@@ -39,7 +39,8 @@ module.exports = (profilePage, loginPage) => {
             });
 
             if (editResponse.status !== 200) {
-                throw new roads.HttpError('Unexpected Error', roads.HttpError.internal_server_error);
+                // TODO: configurable response template
+                return new this.Response('Unexpected error', 500);
             }
 
             return new this.Response('', 302, {'location': '/profile'});

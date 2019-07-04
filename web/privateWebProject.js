@@ -11,7 +11,7 @@ let {
 } = require('roads');
 
 module.exports = class PrivateWebProject {
-    constructor (config, logger, layoutWrapper) {
+    constructor (config, logger, layoutWrapper, pageNotFoundTemplate) {
         if (!this.hasAllKeys(config, ['authCookieName', 'secure', 'secret', 'api'])) {
             throw new Error('Mising config key.');
         }
@@ -33,7 +33,7 @@ module.exports = class PrivateWebProject {
         this.road.use(middleware.killSlash);
         this.road.use(middleware.cookie());
         this.road.use(require('./middleware/addLayout.js')(layoutWrapper));
-        this.road.use(middleware.emptyTo404);
+        this.road.use(require('./middleware/emptyTo404.js')(pageNotFoundTemplate));
         this.road.use(middleware.setTitle);
         this.road.use(middleware.parseBody);
         this.road.use(require('./middleware/api.js')(config.api.secure, config.api.hostname, config.api.port));

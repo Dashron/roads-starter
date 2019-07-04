@@ -3,7 +3,7 @@
 const { Resource } = require('roads-api');
 const { NotFoundError, InvalidRequestError, ForbiddenError } = require('roads-api').HTTPErrors;
 const { MEDIA_JSON, MEDIA_JSON_MERGE, AUTH_BEARER } = require('roads-api').CONSTANTS;
-const roadsReq = require('roads-req');
+let roads = require('roads');
 
 // Not a big fan of this method for passing the connection
 module.exports = function (dbConnection, logger, tokenResolver, cognitoUrl) {
@@ -83,26 +83,18 @@ module.exports = function (dbConnection, logger, tokenResolver, cognitoUrl) {
 
         async fullReplace (models, requestBody, auth) {
             if (!requestBody) {
-                throw new InvalidRequestError('Invalid credentials provided for this user');
+                throw new InvalidRequestError('Credentials must be provided for this user');
             }
 
             // Ensure that the user being registered via amazon cognito actually exists in amazon cognito. 
             // This is a lightweight check to ensure all data to this endpoint is valid, as opposed to forcing some form of authentication on this endpoint 
             // Note: this might be better as a part of the userRepresentation Validation. Maybe a new "validate multi" function or something.
-            let authResponse = await roadsReq.request({
-                request: {
-                    method: 'GET',
-                    protocol: 'https:',
-                    hostname: cognitoUrl,
-                    path: '/oauth2/userInfo',
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded',
-                        'authorization': 'Bearer ' + requestBody.getRequestBody().accessToken
-                    },
-                }
+            let cognitoRequest = new roads.Client(true, cognitoUrl);
+            let authResponse = await cognitoRequest.request('GET', '/oauth2/userInfo', undefined, {
+                'authorization': 'Bearer ' + requestBody.getRequestBody().accessToken
             });
 
-            if (authResponse.response.statusCode != 200 || authResponse.body.sub != models.remoteId) {
+            if (authResponse.status != 200 || authResponse.body.sub != models.remoteId) {
                 throw new InvalidRequestError('Invalid credentials provided for this user');
             }
 

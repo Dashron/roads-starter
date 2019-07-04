@@ -46,7 +46,7 @@ module.exports = (router, config, logger) => {
         let authResponse = await roadsReq.request({
             request: {
                 method: 'POST',
-                protocol: 'https:',
+                protocol: 'https',
                 hostname: config.cognitoUrl,
                 path: '/oauth2/token',
                 headers: {

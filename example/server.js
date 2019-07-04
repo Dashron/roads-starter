@@ -38,9 +38,7 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
     /*
     * PROJECT
     */
-    let privateWeb = new roadsStarter.PrivateWebProject(config.web, webLogger, layout, () => {
-        return layout(pageNotFoundTemplate(), 'Page not found');
-    });
+    let privateWeb = new roadsStarter.PrivateWebProject(config.web, webLogger, layout, pageNotFoundTemplate);
     
     if (ENVIRONMENT != "docker") {
         // docker sends these through nginx

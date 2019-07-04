@@ -6,7 +6,7 @@ var roads = require('roads');
 
 // todo: fix config, figure out how to do this without the browser compling all the secure shit
 module.exports = class PrivateWebProject {
-    constructor (config, logger, document, window, mainContentElement) {
+    constructor (config, logger, document, window, mainContentElement, pageNotFoundTemplate) {
         // todo: require api.external.source, hostname and port
         if (!this.hasAllKeys(config, ['secure', 'hostname', 'port', 'authCookieName', 'cognitoClientId', 'cognitoUrl', 'cognitoRedirectUri', 'api'])) {
             throw new Error('Mising config key.');
@@ -29,7 +29,7 @@ module.exports = class PrivateWebProject {
         });
 
         this.road.use(roads.middleware.parseBody);
-        this.road.use(roads.middleware.emptyTo404);
+        this.road.use(require('./middleware/emptyTo404.js')(pageNotFoundTemplate));
         this.road.use(require('./middleware/api.js')(config.api.external.secure, config.api.external.hostname, config.api.external.port));
 
         var pjax = new roads.PJAX(this.road, mainContentElement, window);
