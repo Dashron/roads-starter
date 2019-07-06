@@ -17,15 +17,7 @@ module.exports = (secure, hostname, port) => {
                 headers.authorization = "Bearer " + this.authToken;
             }
             
-            return apiClient.request(method, path, body, headers)
-            .then((response) => {
-                // todo: this should check the response content type and only parse app/json type
-                if (response.status === 200) {
-                    response.body = JSON.parse(response.body);
-                }
-
-                return response;
-            })
+            return apiClient.request(method, path, body, headers);
         };
 
         return next();
