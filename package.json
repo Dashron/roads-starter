@@ -1,6 +1,6 @@
 {
   "name": "roads-starter",
-  "version": "1.0.0-beta.12",
+  "version": "1.0.0-beta.13",
   "description": "A starter project for building websites with roads and roads-api",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "moment": "2.24.0",
     "pg": "7.10.0",
     "roads": "5.0.0-beta.12",
-    "roads-api": "0.4.12",
+    "roads-api": "0.5.1",
     "roads-req": "0.2.3",
     "roads-server": "1.0.0-alpha.6",
     "regenerator-runtime": "0.13.2",
