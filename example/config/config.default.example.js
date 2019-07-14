@@ -30,7 +30,7 @@ module.exports = {
             "privateKey": "",
             "certificate": ""
         },
-        "crsfCookieName": ""
+        "csrfCookieName": ""
     },
     "api": {
         "hostname": "",

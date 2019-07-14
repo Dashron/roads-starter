@@ -12,7 +12,7 @@ let {
 
 module.exports = class PrivateWebProject {
     constructor (config, logger, layoutWrapper, pageNotFoundTemplate) {
-        if (!this.hasAllKeys(config, ['authCookieName', 'secure', 'secret', 'api', 'crsfCookieName'])) {
+        if (!this.hasAllKeys(config, ['authCookieName', 'secure', 'secret', 'api', 'csrfCookieName'])) {
             throw new Error('Mising config key.');
         }
 
@@ -32,7 +32,7 @@ module.exports = class PrivateWebProject {
 
         this.road.use(middleware.killSlash);
         this.road.use(middleware.cookie());
-        this.road.use(require('./middleware/csrfServer.js')(config.crsfCookieName));
+        this.road.use(require('./middleware/csrfServer.js')(config.csrfCookieName));
         this.road.use(require('./middleware/addLayout.js')(layoutWrapper));
         this.road.use(require('./middleware/emptyTo404.js')(pageNotFoundTemplate));
         this.road.use(middleware.setTitle);
