@@ -31,6 +31,7 @@ module.exports = class PrivateWebProject {
         this.road.use(roads.middleware.parseBody);
         this.road.use(require('./middleware/emptyTo404.js')(pageNotFoundTemplate));
         this.road.use(require('./middleware/api.js')(config.api.external.secure, config.api.external.hostname, config.api.external.port));
+        this.road.use(require('./middleware/csrfClientONLY.js'));
 
         var pjax = new roads.PJAX(this.road, mainContentElement, window);
         pjax.addTitleMiddleware();

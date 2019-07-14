@@ -29,7 +29,8 @@ module.exports = {
         "credentials": {
             "privateKey": "",
             "certificate": ""
-        }
+        },
+        "crsfCookieName": ""
     },
     "api": {
         "hostname": "",
