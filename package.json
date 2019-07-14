@@ -1,6 +1,6 @@
 {
   "name": "roads-starter",
-  "version": "1.0.0-beta.16",
+  "version": "1.0.0-beta.17",
   "description": "A starter project for building websites with roads and roads-api",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "pg": "7.11.0",
     "roads": "5.0.0-beta.13",
     "roads-api": "0.5.1",
-    "roads-req": "0.2.3",
+    "roads-req": "0.2.4",
     "roads-server": "1.0.0-alpha.6",
     "regenerator-runtime": "0.13.2",
     "sequelize": "5.10.0",
