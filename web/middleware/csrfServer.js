@@ -21,6 +21,11 @@ module.exports = (cookieName) => {
         };
 
         this.checkCsrfToken = (providedToken) => {
+            // If we couldn't find the configured cookie, or any cookies at all, return false. This is to protect against any weird bugs causing a false equivilancy (e.g. providedToken and cookie are both false)
+            if (!this.cookies || !this.cookies[cookieName]) {
+                return false;
+            }
+
             return this.cookies[cookieName] === providedToken;
         };
 
