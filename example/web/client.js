@@ -23,7 +23,10 @@ let client = new ClientProject({
     }
 },  console, document, window, document.getElementById('main-content'), pageNotFoundTemplate);
 
+client.pjax.registerAdditionalElement(document.getElementById('root-link'));
+
 let loginTemplate = fs.readFileSync('./web/templates/loginUrl.hbs').toString('utf-8');
 let profileTemplate = fs.readFileSync('./web/templates/profile.hbs').toString('utf-8');
 
 client.addRoutes(require('../../web/publicUserRoutes.js')(handlebars.compile(profileTemplate), handlebars.compile(loginTemplate)));
+client.addRoutes(require('./publicRoutes.js'));

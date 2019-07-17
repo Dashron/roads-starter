@@ -8,7 +8,7 @@
 <body>
     <header>
         <div id="header-content">
-            <a id="root-link" href="/">Home</a>
+            <a id="root-link" data-roads-pjax="link" href="/">Home</a>
             {{#if loggedIn}}
                 <form method="POST" action="/signout">
                     <input type="submit" value="Signout">

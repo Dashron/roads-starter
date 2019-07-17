@@ -33,10 +33,10 @@ module.exports = class PrivateWebProject {
         this.road.use(require('./middleware/api.js')(config.api.external.secure, config.api.external.hostname, config.api.external.port));
         this.road.use(require('./middleware/csrfClientONLY.js'));
 
-        var pjax = new roads.PJAX(this.road, mainContentElement, window);
-        pjax.addTitleMiddleware();
-        pjax.addCookieMiddleware(document);
-        pjax.register();
+        this.pjax = new roads.PJAX(this.road, mainContentElement, window);
+        this.pjax.addTitleMiddleware();
+        this.pjax.addCookieMiddleware(document);
+        this.pjax.register();
 
         this.road.use(require('./middleware/publicAuth.js')(config.authCookieName, console));
 
