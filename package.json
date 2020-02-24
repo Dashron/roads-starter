@@ -1,12 +1,15 @@
 {
   "name": "roads-starter",
-  "version": "1.0.0-beta.20",
+  "version": "1.0.0",
   "description": "A starter project for building websites with roads and roads-api",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "jest tests",
     "start-api": "node api/api-server.js",
-    "start-web": "node web/web-server.js"
+    "start-web": "node web/web-server.js",
+    "prepare": "tsc",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -19,23 +22,28 @@
   },
   "homepage": "https://github.com/Dashron/roads-starter#readme",
   "dependencies": {
-    "handlebars": "^4.1.2",
+    "handlebars": "^4.7.3",
     "jsonwebtoken": "^8.5.1",
-    "jwk-to-pem": "^2.0.0",
+    "jwk-to-pem": "^2.0.3",
     "moment": "2.24.0",
-    "pg": "7.11.0",
-    "roads": "5.0.0-beta.15",
-    "roads-api": "0.5.2",
-    "roads-req": "0.2.5",
-    "roads-server": "1.0.0-alpha.6",
-    "regenerator-runtime": "0.13.2",
-    "sequelize": "5.10.0",
-    "browserify": "16.2.3",
-    "@babel/core": "7.5.4",
+    "pg": "7.18.2",
+    "roads": "6.1.0",
+    "roads-api": "1.0.1",
+    "roads-req": "0.4.2",
+    "roads-server": "1.0.1",
+    "regenerator-runtime": "0.13.3",
+    "sequelize": "5.21.5",
+    "browserify": "16.5.0",
+    "@babel/core": "7.8.4",
     "babelify": "10.0.0",
-    "@babel/preset-env": "7.5.4",
+    "@babel/preset-env": "7.8.4",
     "envify": "4.1.0",
     "brfs": "2.0.2",
     "json-pointer": "0.6.0"
+  },
+  "devDependencies": {
+    "@types/json-pointer": "^1.0.30",
+    "@types/jsonwebtoken": "^8.3.7",
+    "@types/jwk-to-pem": "^2.0.0"
   }
 }
