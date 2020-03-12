@@ -3,6 +3,7 @@
 import { Router, Resource } from 'roads-api';
 import { Server } from 'roads-server';
 import { Sequelize } from 'sequelize';
+import UserResource from './users/userResource';
 import * as fs from 'fs';
 
 import {
@@ -10,6 +11,8 @@ import {
     Response,
     Middleware
 } from 'roads';
+
+import { Logger } from '../index';
 
 function hasAllKeys(check: object, keys: Array<string>) {
     if (!check) {
@@ -27,7 +30,7 @@ function hasAllKeys(check: object, keys: Array<string>) {
     return true;
 }
 
-type APIProjectConfig = {
+interface APIProjectConfig {
     corsOrigins: Array<string>,
     corsHeaders: Array<string>,
     corsMethods: Array<string>,
@@ -38,6 +41,7 @@ type APIProjectConfig = {
     PGPORT: number,
     PGSSL: string,
     cognitoUrl: string,
+    cognitoPort: number,
     protocol: "http" | "https",
     port: number,
     hostname: string,
@@ -45,11 +49,6 @@ type APIProjectConfig = {
         privateKey: string,
         certificate: string
     }
-}
-
-type Logger = {
-    info: (param: any) => void,
-    error: (err: Error) => void
 }
 
 export default class APIProject {
@@ -128,8 +127,7 @@ export default class APIProject {
 
         this.addModel('./users/userModel.js');
         
-        // I don't like passing in the connection like this
-        this.addResource('/users/{remote_id}', require('./users/userResource.js.js')(this.connection, this.logger, this.tokenResolver, this.config.cognitoUrl), {
+        this.addResource('/users/{remote_id}', new UserResource(this.connection, this.logger, this.tokenResolver, this.config.cognitoUrl, this.config.cognitoPort), {
             urlParams: {
                 schema: {
                     remote_id: {

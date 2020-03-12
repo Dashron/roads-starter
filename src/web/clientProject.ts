@@ -2,8 +2,9 @@ require("regenerator-runtime/runtime");
 import { Road, RoadsPJAX } from 'roads';
 import { Middleware } from 'roads';
 import SimpleRouter from 'roads/types/middleware/simpleRouter';
+import { Logger } from '../index';
 
-type ClientProjectConfig = {
+interface ClientProjectConfig {
     api: {
         external: {
             secure: boolean,
@@ -23,7 +24,7 @@ export default class PrivateWebProject {
     pjax: RoadsPJAX;
     router: SimpleRouter;
 
-    constructor (config: ClientProjectConfig, logger: Logger, document: Document, window: Window, mainContentElement: HTMLElement, pageNotFoundTemplate) {
+    constructor (config: ClientProjectConfig, logger: Logger, document: Document, window: Window, mainContentElement: HTMLElement, pageNotFoundTemplate: () => string) {
         // todo: require api.external.source, hostname and port
         if (!this.hasAllKeys(config, ['secure', 'hostname', 'port', 'authCookieName', 'cognitoClientId', 'cognitoUrl', 'cognitoRedirectUri', 'api'])) {
             throw new Error('Mising config key.');

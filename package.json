@@ -8,7 +8,6 @@
     "test": "jest tests",
     "start-api": "node api/api-server.js",
     "start-web": "node web/web-server.js",
-    "prepare": "tsc",
     "build": "tsc"
   },
   "repository": {
@@ -22,28 +21,32 @@
   },
   "homepage": "https://github.com/Dashron/roads-starter#readme",
   "dependencies": {
+    "@babel/core": "7.8.7",
+    "@babel/preset-env": "7.8.7",
+    "@types/bluebird": "^3.5.30",
+    "@types/cookie": "^0.3.3",
+    "@types/uri-templates": "^0.1.30",
+    "@types/validator": "^12.0.1",
+    "babelify": "10.0.0",
+    "brfs": "2.0.2",
+    "browserify": "16.5.0",
+    "envify": "4.1.0",
     "handlebars": "^4.7.3",
+    "json-pointer": "0.6.0",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.3",
     "moment": "2.24.0",
     "pg": "7.18.2",
-    "roads": "6.1.0",
-    "roads-api": "1.0.1",
+    "regenerator-runtime": "0.13.3",
+    "roads": "6.1.2",
+    "roads-api": "1.1.2",
     "roads-req": "0.4.2",
     "roads-server": "1.0.1",
-    "regenerator-runtime": "0.13.3",
-    "sequelize": "5.21.5",
-    "browserify": "16.5.0",
-    "@babel/core": "7.8.4",
-    "babelify": "10.0.0",
-    "@babel/preset-env": "7.8.4",
-    "envify": "4.1.0",
-    "brfs": "2.0.2",
-    "json-pointer": "0.6.0"
+    "sequelize": "5.21.5"
   },
   "devDependencies": {
     "@types/json-pointer": "^1.0.30",
-    "@types/jsonwebtoken": "^8.3.7",
+    "@types/jsonwebtoken": "^8.3.8",
     "@types/jwk-to-pem": "^2.0.0"
   }
 }

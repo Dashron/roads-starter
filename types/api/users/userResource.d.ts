@@ -1,12 +1,9 @@
-import { User } from "./userModel";
-import { WritableRepresentation } from "roads-api/types/Representation/representation";
 import { ParsedURLParams, ActionList } from "roads-api/types/Resource/resource";
 import { Resource } from 'roads-api';
-export declare class UserResource extends Resource {
-    constructor();
-    modelsResolver(urlParams: ParsedURLParams, searchParams: URLSearchParams | undefined, action: keyof ActionList, pathname: string): Promise<any>;
-    get(models: User, requestBody: any, requestMediaHandler: WritableRepresentation, auth: User): void;
-    partialEdit(models: User, requestBody: any, requestMediaHandler: WritableRepresentation, auth: User): any;
-    fullReplace(models: User, requestBody: any, requestMediaHandler: WritableRepresentation, auth: User): Promise<any>;
-    delete(models: User, requestBody: any, requestMediaHandler: WritableRepresentation, auth: User): any;
+import { Sequelize } from "sequelize/types";
+import { Logger } from "../../";
+export default class UserResource extends Resource {
+    protected dbConnection: Sequelize;
+    constructor(dbConnection: Sequelize, logger: Logger, tokenResolver: Function, cognitoUrl: string, cognitoPort: number);
+    modelsResolver(urlParams: ParsedURLParams, searchParams: URLSearchParams | undefined, action: keyof ActionList, pathname: string): Promise<import("sequelize/types").Model<unknown, unknown>>;
 }

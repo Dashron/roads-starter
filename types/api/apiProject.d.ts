@@ -1,7 +1,8 @@
 import { Router, Resource } from 'roads-api';
 import { Sequelize } from 'sequelize';
 import { Road } from 'roads';
-declare type APIProjectConfig = {
+import { Logger } from '../index';
+interface APIProjectConfig {
     corsOrigins: Array<string>;
     corsHeaders: Array<string>;
     corsMethods: Array<string>;
@@ -12,6 +13,7 @@ declare type APIProjectConfig = {
     PGPORT: number;
     PGSSL: string;
     cognitoUrl: string;
+    cognitoPort: number;
     protocol: "http" | "https";
     port: number;
     hostname: string;
@@ -19,11 +21,7 @@ declare type APIProjectConfig = {
         privateKey: string;
         certificate: string;
     };
-};
-declare type Logger = {
-    info: (param: any) => void;
-    error: (err: Error) => void;
-};
+}
 export default class APIProject {
     protected road: Road;
     protected config: APIProjectConfig;
@@ -37,6 +35,6 @@ export default class APIProject {
     addTokenResolver(resolver: Function): void;
     addRoadsUserEndpoints(): void;
     start(): void;
-    setup(): any;
+    setup(): import("sequelize/types").Promise<Sequelize>;
 }
 export {};

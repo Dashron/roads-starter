@@ -3,6 +3,9 @@ import roadsReq from 'roads-req';
 import qs from 'querystring';
 import jwt from 'jsonwebtoken';
 import jwkToPem from 'jwk-to-pem';
+import SimpleRouter, { SimpleRouterURL } from 'roads/types/middleware/simpleRouter';
+import { Logger } from '../index';
+import { CookieResponse } from 'roads/types/middleware/cookie';
 
 function hasAllKeys(check: object, keys: Array<string>) {
     let checkKeys = Object.keys(check);
@@ -16,13 +19,9 @@ function hasAllKeys(check: object, keys: Array<string>) {
     return true;
 }
 
-type CognitoJWKSKey {
-
-}
-
-export type PrivateUserRoutesConfig = {
+export interface PrivateUserRoutesConfig {
     cognitoJwks: {
-        keys: Array<jwkToPem.JWK>
+        keys: Array<KIDJWK>
     },
     cognitoUrl: string,
     cognitoClientId: string,
@@ -30,12 +29,17 @@ export type PrivateUserRoutesConfig = {
     cognitoClientSecret: string,
     secret: string,
     authCookieName: string,
-    secure: string,
+    secure: boolean,
     hostname: string
 }
 
-export type JWTUser = {
+export interface JWTUser {
+    sub: string
+}
 
+// Can't tell why the library I use doesn't support the "kid" (https://tools.ietf.org/html/rfc7517#section-4.5) field in their jwks. This is a hack
+export interface KIDJWK extends jwkToPem.EC {
+    kid: string
 }
 
 export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: Logger) => {
@@ -43,7 +47,7 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
         throw new Error('Mising config key.');
     }
 
-    function getProperJwk(decodedHeader: jwkToPem.JWK) {
+    function getProperJwk(decodedHeader: { kid: string }): jwkToPem.JWK | null {
         let kid = decodedHeader.kid;
 
         for (let i = 0; i < config.cognitoJwks.keys.length; i++) {
@@ -55,7 +59,7 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
         return null;
     }
 
-   router.addRoute('GET', '/login/redirect', async function (url: URL, body: string, headers: {[x: string]: string}) {
+   router.addRoute('GET', '/login/redirect', async function (url: SimpleRouterURL, body: string, headers: {[x: string]: string}) {
         if (!url.query.code) {
             return new this.Response('No auth code found', 400, {'content-type': 'text/html'});
         }
@@ -63,7 +67,7 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
         // exchange request tokens for oauth2 access token
         // https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
 
-        let authResponse = await roadsReq.request({
+        let authResponse = await roadsReq({
             request: {
                 method: 'POST',
                 protocol: 'https',
@@ -85,15 +89,28 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
                 pw: config.cognitoClientSecret
             }
         });
+
+        let parsedResponse = JSON.parse(authResponse.body);
+
+        if (typeof(parsedResponse) !== "object") {
+            console.log("Could not locate ID Token in the auth response");
+            return new this.Response("Unknown error", 500);
+        }
         
         // save token, refresh, expiry info and remote user id into db via the create new user API call (append)
         // find a node jwt library
         // JWT decode the id token
         let jwtUser: JWTUser = await new Promise((resolve, reject) => {
+            if (!("id_token" in parsedResponse)) {
+                return reject(new Error("Could not locate ID Token in the auth response"));
+            }
+
+            let idToken = parsedResponse.id_token;
+
             // https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html
             // encryption secret is located at https://cognito-idp.{region}.amazonaws.com/{userPoolId}/.well-known/jwks.json
             // so in this case, https://cognito-idp.us-east-1.amazonaws.com/us-east-1_B88VD5WrW/.well-known/jwks.json
-            let decoded = jwt.decode(authResponse.body.id_token, {complete: true});
+            let decoded = jwt.decode(idToken, {complete: true});
 
             if (!decoded || typeof(decoded) === "string") {
                 return reject(new Error('Could not decode the JWT body for this auth request'));
@@ -102,12 +119,12 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
             let jwk = getProperJwk(decoded.header);
 
             if (!jwk) {
-                reject(new Error('could not find the proper JWK for this auth request'));
+                return reject(new Error('could not find the proper JWK for this auth request'));
             }
 
             let pem = jwkToPem(jwk);
 
-            jwt.verify(authResponse.body.id_token, pem, { algorithms: ['RS256'] }, function (err, decoded) {
+            jwt.verify(idToken, pem, { algorithms: ['RS256'] }, function (err, decoded: JWTUser) {
                 if (err) {
                     return reject(err);
                 }
@@ -118,15 +135,15 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
 
         // Create or update the local user record
         let apiUser = await this.api('PUT', '/users/' + jwtUser.sub, {
-            "accessToken": authResponse.body.access_token,
-            "expiresIn": authResponse.body.expires_in,
-            "refreshToken": authResponse.body.refresh_token
+            "accessToken": parsedResponse.access_token,
+            "expiresIn": parsedResponse.expires_in,
+            "refreshToken": parsedResponse.refresh_token
         }, {});
 
-        let response = new this.Response('Unexpected error when updating user login details', 500);
+        let response = new this.Response('Unexpected error when updating user login details', 500) as CookieResponse;
 
         if (apiUser.status === 200) {
-            response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
+            response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'}) as CookieResponse;
 
             let token = jwt.sign({
                 val: apiUser.body.remoteId
@@ -148,8 +165,8 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
         return response;
     });
 
-    router.addRoute('POST', '/signout', function (url, body, headers) {
-        let response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'});
+    router.addRoute('POST', '/signout', async function (url, body, headers) {
+        let response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'}) as CookieResponse;
 
         response.setCookie(config.authCookieName, null, {
             expires: moment().toDate(),
@@ -160,7 +177,7 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
         return response;
     });
 
-    router.addRoute('GET', '/signout/redirect', function (url, body, headers) {
+    router.addRoute('GET', '/signout/redirect', async function (url, body, headers) {
         /*let redirectPage = Handlebars.compile(loginRedirectTemplate);
         let responseBody = redirectPage();*/
 

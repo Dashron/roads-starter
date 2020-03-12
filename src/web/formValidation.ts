@@ -1,7 +1,7 @@
 import jsonPointer from 'json-pointer';
 import { InputValidationError } from 'roads-api/types/core/httpErrors';
 
-module.exports.problemsToFormdata = (fieldPaths: Array<string>, requestBody: any, problems: Array<InputValidationError>) => {
+export function problemsToFormdata(fieldPaths: Array<string>, requestBody: any, problems: Array<InputValidationError>) {
     let formData: {[x: string]: {
         invalid: boolean,
         value: any,
@@ -31,7 +31,7 @@ module.exports.problemsToFormdata = (fieldPaths: Array<string>, requestBody: any
     return formData;
 }
 
-module.exports.valOrUndefined = (value: string) => {
+export function valOrUndefined (value: string) {
     return value === '' ? undefined : value;
 }
 

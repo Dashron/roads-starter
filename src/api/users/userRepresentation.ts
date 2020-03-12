@@ -2,8 +2,8 @@ import { JSONRepresentation } from 'roads-api';
 import moment from 'moment';
 import { User } from './userModel';
 
-module.exports = class UserRepresentation extends JSONRepresentation {
-    constructor (method: string) {
+export default class UserRepresentation extends JSONRepresentation {
+    constructor (action: string) {
         super();
 
         this.init({

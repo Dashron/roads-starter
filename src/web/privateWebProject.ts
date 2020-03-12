@@ -6,10 +6,11 @@ import path from 'path';
 
 import { Road, Response } from 'roads';
 import { Middleware } from 'roads';
-import SimpleRouter from 'roads/types/middleware/simpleRouter';
+import SimpleRouter, { SimpleRouterURL } from 'roads/types/middleware/simpleRouter';
 import { Context } from 'roads/types/core/road';
+import { Logger } from '../index';
 
-type PrivateWebProjectConfig = {
+interface PrivateWebProjectConfig {
     csrfCookieName: string,
     api: {
         secure: boolean,
@@ -26,7 +27,7 @@ type PrivateWebProjectConfig = {
     }
 }
 
-module.exports = class PrivateWebProject {
+export default class PrivateWebProject {
     road: Road;
     config: PrivateWebProjectConfig;
     logger: Logger;
@@ -85,7 +86,7 @@ module.exports = class PrivateWebProject {
         return this.router;
     }
 
-    addRoutes(module) {
+    addRoutes(module: (router: SimpleRouter, config: object, logger: Logger) => void) {
         if (typeof module === "string") {
             require(module)(this.router, this.config, this.logger);
         } else {
@@ -94,7 +95,7 @@ module.exports = class PrivateWebProject {
     }
 
     addStaticFile(urlPath: string, filePath: string, contentType: string, encoding='utf-8') {
-        this.router.addRoute('GET', urlPath, function (this: Context, url: string, body: string, headers: {[x: string]: string}) {
+        this.router.addRoute('GET', urlPath, function (this: Context, url: SimpleRouterURL, body: string, headers: {[x: string]: string}) {
             this.ignore_layout = true;
             return Promise.resolve(new this.Response(fs.readFileSync(filePath).toString(encoding), 200, {
                 'Content-Type': contentType + '; charset=' + encoding

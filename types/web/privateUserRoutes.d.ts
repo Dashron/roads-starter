@@ -1,7 +1,9 @@
 import jwkToPem from 'jwk-to-pem';
-export declare type PrivateUserRoutesConfig = {
+import SimpleRouter from 'roads/types/middleware/simpleRouter';
+import { Logger } from '../index';
+export interface PrivateUserRoutesConfig {
     cognitoJwks: {
-        keys: Array<jwkToPem.JWK>;
+        keys: Array<KIDJWK>;
     };
     cognitoUrl: string;
     cognitoClientId: string;
@@ -9,9 +11,14 @@ export declare type PrivateUserRoutesConfig = {
     cognitoClientSecret: string;
     secret: string;
     authCookieName: string;
-    secure: string;
+    secure: boolean;
     hostname: string;
-};
-export declare type JWTUser = {};
-declare const _default: (router: any, config: PrivateUserRoutesConfig, logger: any) => void;
+}
+export interface JWTUser {
+    sub: string;
+}
+export interface KIDJWK extends jwkToPem.EC {
+    kid: string;
+}
+declare const _default: (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: Logger) => void;
 export default _default;
