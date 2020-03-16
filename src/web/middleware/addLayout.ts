@@ -1,4 +1,3 @@
-"use strict";
 /**
  * addLayout.js
  * Copyright(c) 2018 Aaron Hedges <aaron@dashron.com>
@@ -6,9 +5,9 @@
  * 
  */
 
-let Roads = require('roads');
+import { Context, Middleware } from 'roads/types/core/road';
 
-module.exports = function (wrapLayout) {
+export default function (wrapLayout: (body: string, title: string, context: Context) => string): Middleware {
     /**
      * This middleware wraps the response in a standard HTML layout. It looks for three fields in the request context.
      * - _page_title - The title of the page

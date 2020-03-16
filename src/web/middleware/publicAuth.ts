@@ -1,8 +1,9 @@
-"use strict";
+import { Logger } from "../../index";
+import { Middleware } from "roads/types/core/road";
 
 var jwt = require('jsonwebtoken');
 
-module.exports = (authCookieName, logger) => {
+let publicAuth = (authCookieName: string, logger: Logger): Middleware => {
     return function (method, path, body, headers, next) {
         this.loggedIn = false;
     
@@ -22,4 +23,6 @@ module.exports = (authCookieName, logger) => {
 
         return next();
     };
-}
+};
+
+export default publicAuth;
