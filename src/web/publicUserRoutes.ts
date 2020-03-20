@@ -10,7 +10,7 @@ export interface PublicUserRoutesConfig {
     cognitoClientId: string
 }
 
-module.exports = (profilePage: Function, loginPage: Function) => {
+export default (profilePage: Function, loginPage: Function) => {
     return function (router: SimpleRouter, config: PublicUserRoutesConfig) {
         router.addRoute('GET', '/profile', async function (url, body, headers) {
             this.setTitle('Your Profile');

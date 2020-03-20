@@ -7,27 +7,27 @@ services:
   api:
     build:
       context: ../
-      dockerfile: example/Dockerfile-node
+      dockerfile: jsExample/Dockerfile-node
     # depends_on:
     #   - "init"
     restart: always
     environment: 
       ROADS_ENV: "docker"
-    command: ["node", "example/server.js", "api"]
+    command: ["node", "jsExample/server.js", "api"]
   web:
     build:
       context: ../
-      dockerfile: example/Dockerfile-node
+      dockerfile: jsExample/Dockerfile-node
     restart: always
     environment: 
       ROADS_ENV: "docker"
     depends_on:
       - "api"
-    command: ["node", "example/server.js", "web"]
+    command: ["node", "jsExample/server.js", "web"]
   nginx:
     build:
       context: ../
-      dockerfile: example/Dockerfile-nginx
+      dockerfile: jsExample/Dockerfile-nginx
     image: nginx
     restart: always
     ports:

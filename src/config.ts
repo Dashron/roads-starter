@@ -1,9 +1,9 @@
 "use strict";
 
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
-module.exports = function (folderPath: string, environment: string) {
+export default function (folderPath: string, environment: string) {
     let files = fs.readdirSync(folderPath);
     let environmentConfig = {};
     let defaultConfig = {};
