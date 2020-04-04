@@ -1,4 +1,4 @@
-import jwkToPem from 'jwk-to-pem';
+import * as jwkToPem from 'jwk-to-pem';
 import SimpleRouter from 'roads/types/middleware/simpleRouter';
 import { Logger } from '../index';
 export interface PrivateUserRoutesConfig {

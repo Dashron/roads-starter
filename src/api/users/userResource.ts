@@ -20,7 +20,7 @@ export default class UserResource extends Resource {
         this.dbConnection = dbConnection;
 
         this.addAction("fullReplace", async (models: User, requestBody: any, requestMediaHandler: WritableRepresentation, auth: User) => {
-            if (!requestBody) {
+            if (!requestBody || !requestBody.accessToken) {
                 throw new InvalidRequestError('Credentials must be provided for this user');
             }
     
@@ -29,7 +29,7 @@ export default class UserResource extends Resource {
             // Note: this might be better as a part of the userRepresentation Validation. Maybe a new "validate multi" function or something.
             let cognitoRequest = new Request(true, cognitoUrl, cognitoPort);
             let authResponse = await cognitoRequest.request('GET', '/oauth2/userInfo', undefined, {
-                'authorization': 'Bearer ' + requestBody.getRequestBody().accessToken
+                'authorization': 'Bearer ' + requestBody.accessToken
             });
     
             let parsedResponse = JSON.parse(authResponse.body);
@@ -95,7 +95,7 @@ export default class UserResource extends Resource {
     }
 
     async modelsResolver(urlParams: ParsedURLParams, searchParams: URLSearchParams | undefined, action: keyof ActionList, pathname: string) {
-        let user = await this.dbConnection.models.user.findOne({
+        let user = await this.dbConnection.models.User.findOne({
             where: {
                 remoteId: urlParams.remote_id
             }
@@ -106,7 +106,7 @@ export default class UserResource extends Resource {
         }
 
         if (action === 'fullReplace') {
-            return this.dbConnection.models.user.build({
+            return this.dbConnection.models.User.build({
                 remoteId: urlParams.remote_id,
                 active: 1
             });

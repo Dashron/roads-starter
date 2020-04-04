@@ -5,4 +5,5 @@
  *
  */
 import { Context, Middleware } from 'roads/types/core/road';
-export default function (wrapLayout: (body: string, title: string, context: Context) => string): Middleware;
+export declare type LayoutWrapper = (body: string, title: string, context: Context) => string;
+export default function (layoutWrapper: LayoutWrapper): Middleware;

@@ -44,6 +44,7 @@ interface APIProjectConfig {
     cognitoPort: number,
     protocol: "http" | "https",
     port: number,
+    host: string,
     hostname: string,
     credentials: {
         privateKey: string,
@@ -157,7 +158,7 @@ export default class APIProject {
             return new Response('Unknown Error', 500);
         }, options);
         
-        server.listen(this.config.port, this.config.hostname);
+        server.listen(this.config.port, this.config.host);
     }
 
     setup() {

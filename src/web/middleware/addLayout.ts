@@ -7,7 +7,9 @@
 
 import { Context, Middleware } from 'roads/types/core/road';
 
-export default function (wrapLayout: (body: string, title: string, context: Context) => string): Middleware {
+export type LayoutWrapper = (body: string, title: string, context: Context) => string;
+
+export default function (layoutWrapper: LayoutWrapper): Middleware {
     /**
      * This middleware wraps the response in a standard HTML layout. It looks for three fields in the request context.
      * - _page_title - The title of the page
@@ -23,7 +25,7 @@ export default function (wrapLayout: (body: string, title: string, context: Cont
         return next()
             .then((response) => {
                 if (!this.ignore_layout) {
-                    response.body = wrapLayout(response.body, this._page_title ? this._page_title : '', this);
+                    response.body = layoutWrapper(response.body, this._page_title ? this._page_title : '', this);
                 }
 
                 return response;

@@ -6,3 +6,8 @@ node_modules
 */*.js
 !src
 !jest.config.js
+!jsExample/*.js
+!jsExample/*/*.js
+
+jsExample/config
+!jsExample/config/*.example.*

@@ -14,7 +14,7 @@ export default (profilePage: Function, loginPage: Function) => {
     return function (router: SimpleRouter, config: PublicUserRoutesConfig) {
         router.addRoute('GET', '/profile', async function (url, body, headers) {
             this.setTitle('Your Profile');
-            if (!this.loggedIn || !this.authDecoded || !this.authDecoded.val) {
+            if (!this.loggedIn || !this.authDecoded) {
                 return new this.Response('', 302, {'location': '/'})
             }
 

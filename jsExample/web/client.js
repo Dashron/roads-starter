@@ -1,7 +1,6 @@
 "use strict";
 
-let ClientProject = require('../../web/clientProject.js');
-//let ClientProject = require('roads-starter/clientProject');
+let ClientProject = require('roads-starter/web/clientProject');
 let fs = require('fs');
 let handlebars = require('handlebars');
 let pageNotFoundTemplate = handlebars.compile(fs.readFileSync('./web/templates/404.hbs').toString('utf-8'))
@@ -28,5 +27,5 @@ client.pjax.registerAdditionalElement(document.getElementById('root-link'));
 let loginTemplate = fs.readFileSync('./web/templates/loginUrl.hbs').toString('utf-8');
 let profileTemplate = fs.readFileSync('./web/templates/profile.hbs').toString('utf-8');
 
-client.addRoutes(require('../../web/publicUserRoutes.js')(handlebars.compile(profileTemplate), handlebars.compile(loginTemplate)));
-client.addRoutes(require('./publicRoutes.js'));
+//client.addRoutes(require('../../web/publicUserRoutes.js')(handlebars.compile(profileTemplate), handlebars.compile(loginTemplate)));
+//client.addRoutes(require('./publicRoutes.js'));

@@ -10,16 +10,25 @@ import SimpleRouter, { SimpleRouterURL } from 'roads/types/middleware/simpleRout
 import { Context } from 'roads/types/core/road';
 import { Logger } from '../index';
 
+import csrfServer from './middleware/csrfServer';
+import addLayout, { LayoutWrapper } from'./middleware/addLayout';
+import emptyTo404 from './middleware/emptyTo404';
+import apiMiddleware from './middleware/api';
+import privateAuth from './middleware/privateAuth';
+
+
 interface PrivateWebProjectConfig {
     csrfCookieName: string,
     api: {
         secure: boolean,
         hostname: string,
+        host: string,
         port: number
     },
     secret: string,
     authCookieName: string,
     hostname: string,
+    host: string,
     port: number,
     credentials: {
         certificate: string,
@@ -33,7 +42,7 @@ export default class PrivateWebProject {
     logger: Logger;
     router: SimpleRouter;
 
-    constructor (config: PrivateWebProjectConfig, logger: Logger, layoutWrapper: Function, pageNotFoundTemplate: Function) {
+    constructor (config: PrivateWebProjectConfig, logger: Logger, layoutWrapper: LayoutWrapper, pageNotFoundTemplate: () => string) {
         if (!this.hasAllKeys(config, ['authCookieName', 'secure', 'secret', 'api', 'csrfCookieName'])) {
             throw new Error('Mising config key.');
         }
@@ -54,13 +63,13 @@ export default class PrivateWebProject {
 
         this.road.use(Middleware.killSlash);
         this.road.use(Middleware.cookie);
-        this.road.use(require('./middleware/csrfServer.js')(config.csrfCookieName));
-        this.road.use(require('./middleware/addLayout.js')(layoutWrapper));
-        this.road.use(require('./middleware/emptyTo404.js')(pageNotFoundTemplate));
+        this.road.use(csrfServer(config.csrfCookieName));
+        this.road.use(addLayout(layoutWrapper));
+        this.road.use(emptyTo404(pageNotFoundTemplate));
         this.road.use(Middleware.setTitle);
         this.road.use(Middleware.parseBody);
-        this.road.use(require('./middleware/api.js')(config.api.secure, config.api.hostname, config.api.port));
-        this.road.use(require('./middleware/privateAuth.js')(config.authCookieName, this.logger, config.secret));
+        this.road.use(apiMiddleware(config.api.secure, config.api.hostname, config.api.port));
+        this.road.use(privateAuth(config.authCookieName, this.logger, config.secret));
 
         this.router = new Middleware.SimpleRouter(this.road);
     }
@@ -142,7 +151,7 @@ export default class PrivateWebProject {
             return new Response('Unknown Error', 500);
         }, options);
 
-        server.listen(this.config.port, this.config.hostname);
+        server.listen(this.config.port, this.config.host);
     }
 }
 

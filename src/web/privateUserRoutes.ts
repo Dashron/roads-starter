@@ -1,8 +1,8 @@
-import moment from 'moment';
+import * as moment from 'moment';
 import roadsReq from 'roads-req';
-import qs from 'querystring';
-import jwt from 'jsonwebtoken';
-import jwkToPem from 'jwk-to-pem';
+import * as qs from 'querystring';
+import * as jwt from 'jsonwebtoken';
+import * as jwkToPem from 'jwk-to-pem';
 import SimpleRouter, { SimpleRouterURL } from 'roads/types/middleware/simpleRouter';
 import { Logger } from '../index';
 import { CookieResponse } from 'roads/types/middleware/cookie';
@@ -144,9 +144,9 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
 
         if (apiUser.status === 200) {
             response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'}) as CookieResponse;
-
+            
             let token = jwt.sign({
-                val: apiUser.body.remoteId
+                val: apiUser.remoteId
             }, config.secret, {
                 expiresIn: '1d',
                 algorithm: 'HS256'

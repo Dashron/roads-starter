@@ -9,11 +9,12 @@ let privateAuth = (authCookieName: string, logger: Logger, secret: string): Midd
         
         if (this.cookies[authCookieName]) {
             try {
+                // decode it and use the secret to ensure it's signed properly
                 let decoded = jwt.verify(this.cookies[authCookieName], secret, {
                     algorithms: ['HS256']
                 });
 
-                if (decoded) {
+                if (decoded && decoded.val) {
                     this.loggedIn = true;
                     this.authToken = this.cookies[authCookieName];
                     this.authDecoded = decoded;

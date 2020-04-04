@@ -16,6 +16,7 @@ interface APIProjectConfig {
     cognitoPort: number;
     protocol: "http" | "https";
     port: number;
+    host: string;
     hostname: string;
     credentials: {
         privateKey: string;
