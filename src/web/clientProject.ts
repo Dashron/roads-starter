@@ -3,6 +3,10 @@ import { Road, RoadsPJAX } from 'roads';
 import { Middleware } from 'roads';
 import SimpleRouter from 'roads/types/middleware/simpleRouter';
 import { Logger } from '../index';
+import emptyTo404 from './middleware/emptyTo404';
+import apiMiddleware from './middleware/api';
+import csrfClientONLY from './middleware/csrfClientONLY'
+import publicAuth from './middleware/publicAuth';
 
 interface ClientProjectConfig {
     api: {
@@ -47,16 +51,16 @@ export default class PrivateWebProject {
         });
 
         this.road.use(Middleware.parseBody);
-        this.road.use(require('./middleware/emptyTo404.js')(pageNotFoundTemplate));
-        this.road.use(require('./middleware/api.js')(config.api.external.secure, config.api.external.hostname, config.api.external.port));
-        this.road.use(require('./middleware/csrfClientONLY.js'));
+        this.road.use(emptyTo404(pageNotFoundTemplate));
+        this.road.use(apiMiddleware(config.api.external.secure, config.api.external.hostname, config.api.external.port));
+        this.road.use(csrfClientONLY);
 
         this.pjax = new RoadsPJAX(this.road, mainContentElement, window);
         this.pjax.addTitleMiddleware();
         this.pjax.addCookieMiddleware(document);
         this.pjax.register();
 
-        this.road.use(require('./middleware/publicAuth.js')(config.authCookieName, console));
+        this.road.use(publicAuth(config.authCookieName, console));
 
         this.router = new Middleware.SimpleRouter(this.road);
     }

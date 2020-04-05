@@ -10,8 +10,9 @@
   "devDependencies": {},
   "dependencies": {
     "brfs": "^2.0.2",
-    "roads": "6.2.2",
-    "handlebars": "4.7.6"
+    "handlebars": "4.7.6",
+    "roads": "6.2.4",
+    "terser": "4.6.10"
   },
   "private": true,
   "license": "MIT"

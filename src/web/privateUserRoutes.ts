@@ -144,9 +144,10 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
 
         if (apiUser.status === 200) {
             response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'}) as CookieResponse;
-            
+            let parsedUser = JSON.parse(apiUser.body);
+
             let token = jwt.sign({
-                val: apiUser.remoteId
+                val: parsedUser.remoteId
             }, config.secret, {
                 expiresIn: '1d',
                 algorithm: 'HS256'
