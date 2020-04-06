@@ -1,4 +1,4 @@
-import jsonPointer from 'json-pointer';
+import * as jsonPointer from 'json-pointer';
 import { InputValidationError } from 'roads-api/types/core/httpErrors';
 
 export function problemsToFormdata(fieldPaths: Array<string>, requestBody: any, problems: Array<InputValidationError>) {

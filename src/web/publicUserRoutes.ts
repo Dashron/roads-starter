@@ -24,11 +24,12 @@ export default (profilePage: Function, loginPage: Function) => {
                 // TODO: configurable response template
                 return new this.Response('Unexpected error', 500);
             }
+            let responseBody = JSON.parse(userResponse.body);
 
             let response = this.setNewCsrfToken();
             response.body = profilePage({
                 csrfToken: this.csrfToken,
-                user: userResponse.body
+                user: responseBody
             });
                 
             response.status = 200;
@@ -59,7 +60,8 @@ export default (profilePage: Function, loginPage: Function) => {
             });
 
             if (editResponse.status !== 200) {
-                let formData = formValidation.problemsToFormdata(['/active'], this.body, editResponse.body['additional-problems']);
+                let parsedEditBody = JSON.parse(editResponse.body);
+                let formData = formValidation.problemsToFormdata(['/active'], this.body, parsedEditBody['additional-problems']);
                 let userResponse = await this.api('GET', '/users/' + this.authDecoded.val);
 
                 if (userResponse.status !== 200) {
@@ -70,7 +72,7 @@ export default (profilePage: Function, loginPage: Function) => {
                 let response = this.setNewCsrfToken();
                 response.body = profilePage({
                     csrfToken: this.csrfToken,
-                    user: userResponse.body,
+                    user: JSON.parse(userResponse.body),
                     formData: formData
                 });
                 

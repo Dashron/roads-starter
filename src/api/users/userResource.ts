@@ -61,6 +61,8 @@ export default class UserResource extends Resource {
             return models.save();
         }, {
             authSchemes: { [AUTH_BEARER]: tokenResolver },
+            responseMediaTypes: { [MEDIA_JSON]: new UserRepresentation("get") },
+            defaultResponseMediaType: MEDIA_JSON,
             requestMediaTypes: { [MEDIA_JSON_MERGE]: new UserRepresentation("partialEdit") },
             defaultRequestMediaType: MEDIA_JSON_MERGE,
             authRequired: true
