@@ -9,5 +9,14 @@ node_modules
 !jsExample/*.js
 !jsExample/*/*.js
 
-jsExample/config
-!jsExample/config/*.example.*
+tsExample/config/*
+!tsExample/config/*.example.pem
+!tsExample/config/*.example.conf
+!tsExample/config/*.example.txt
+!tsExample/config/*.example.js
+
+jsExample/config/*
+!jsExample/config/*.example.pem
+!jsExample/config/*.example.conf
+!jsExample/config/*.example.txt
+!jsExample/config/*.example.js

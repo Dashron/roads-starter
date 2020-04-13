@@ -2,7 +2,7 @@ import { Router, Resource } from 'roads-api';
 import { Sequelize } from 'sequelize';
 import { Road } from 'roads';
 import { Logger } from '../index';
-interface APIProjectConfig {
+export interface APIProjectConfig {
     corsOrigins: Array<string>;
     corsHeaders: Array<string>;
     corsMethods: Array<string>;
@@ -22,7 +22,9 @@ interface APIProjectConfig {
         privateKey: string;
         certificate: string;
     };
+    secret: string;
 }
+export declare type TokenResolver = (token: string) => Promise<any>;
 export default class APIProject {
     protected road: Road;
     protected config: APIProjectConfig;
@@ -33,9 +35,8 @@ export default class APIProject {
     constructor(config: APIProjectConfig, logger: Logger);
     addModel(path: string): void;
     addResource(path: string, resource: Resource, templateSchema: any): void;
-    addTokenResolver(resolver: Function): void;
+    addTokenResolver(resolverBuilder: (connection: Sequelize, logger: Logger, config: APIProjectConfig) => TokenResolver): void;
     addRoadsUserEndpoints(): void;
     start(): void;
     setup(): import("sequelize/types").Promise<Sequelize>;
 }
-export {};

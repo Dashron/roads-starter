@@ -50,8 +50,8 @@ if (process.argv.length < 3 || process.argv[2] === "web") {
     let loginUrlTemplate = Handlebars.compile(fs.readFileSync(__dirname + '/web/templates/loginUrl.hbs').toString('utf-8'));
 
     // I hate having to use "default" here, it can only be avoided by changing the module type, or accessing it from another file. I also don't like the lack of typing.
-    privateWeb.addRoutes(require('../web/publicUserRoutes.js').default(profileTemplate,loginUrlTemplate));
-    privateWeb.addRoutes(require('../web/privateUserRoutes.js').default);
+    privateWeb.addRoutes(require('roads-starter/web/publicUserRoutes.js').default(profileTemplate,loginUrlTemplate));
+    privateWeb.addRoutes(require('roads-starter/web/privateUserRoutes.js').default);
     privateWeb.addRoutes(require(__dirname + '/web/publicRoutes.js'));
     privateWeb.addRoutes(require(__dirname + '/web/privateRoutes.js'));
 

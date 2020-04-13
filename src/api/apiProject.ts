@@ -13,6 +13,7 @@ import {
 } from 'roads';
 
 import { Logger } from '../index';
+import { User } from './users/userModel';
 
 function hasAllKeys(check: object, keys: Array<string>) {
     if (!check) {
@@ -30,7 +31,7 @@ function hasAllKeys(check: object, keys: Array<string>) {
     return true;
 }
 
-interface APIProjectConfig {
+export interface APIProjectConfig {
     corsOrigins: Array<string>,
     corsHeaders: Array<string>,
     corsMethods: Array<string>,
@@ -49,8 +50,11 @@ interface APIProjectConfig {
     credentials: {
         privateKey: string,
         certificate: string
-    }
+    },
+    secret: string
 }
+
+export type TokenResolver = (token: string) => Promise<any>;
 
 export default class APIProject {
     protected road: Road;
@@ -117,8 +121,8 @@ export default class APIProject {
         this.router.addResource(path, resource, templateSchema);
     }
 
-    addTokenResolver(resolver: Function) {
-        this.tokenResolver = resolver;
+    addTokenResolver(resolverBuilder: (connection: Sequelize, logger: Logger, config: APIProjectConfig) => TokenResolver) {
+        this.tokenResolver = resolverBuilder(this.connection, this.logger, this.config);
     }
 
     addRoadsUserEndpoints() {

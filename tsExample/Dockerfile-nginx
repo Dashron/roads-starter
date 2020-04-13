@@ -1,0 +1,6 @@
+FROM nginx
+
+COPY jsExample/config/nginx.conf /etc/nginx/nginx.conf
+COPY jsExample/config/certificate.pem /etc/nginx/certificate.pem
+COPY jsExample/config/privatekey.pem /etc/nginx/privatekey.pem
+COPY jsExample/static /web/static

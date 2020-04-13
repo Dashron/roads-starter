@@ -1,8 +1,8 @@
 "use strict";
 
 import { Server } from 'roads-server';
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 import { Road, Response } from 'roads';
 import { Middleware } from 'roads';

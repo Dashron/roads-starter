@@ -1,0 +1,16 @@
+
+<form id="editProfile" method="POST" action="/profile" data-roads-pjax="form">
+    <input type="hidden" name="csrfToken" value="{{csrfToken}}" />
+    <label>ID:</label><span>{{user.id}}</span><br />
+    <label>Created Time:</label><span>{{user.createdTime}}</span><br />
+    <label>Remote ID:</label><span>{{user.remoteId}}</span><br />
+    <label>Expires In:</label><span>{{user.expiresIn}}</span><br />
+    <label for="active">Active?</label><span>{{user.active}}</span><br />
+    {{! Admins might want to change active state, but you probably shouldn't change your own.}}
+    <select id="active" name="active" style="{{#if formData.[/active].invalid}}background: red{{/if}}">
+        <option value="true" {{! #if formData.[/active].value selected{{/if}}>Yes</option>
+        <option value="false" {{! #unless formData.[/active].value selected{{/unless}}>No</option>
+        <option value="INVALID">Example Invalid Value</option>
+    </select><br />
+    <input type="submit" id="performEditProfile" value="Edit Profile" data-roads-pjax="submit">
+</form>
