@@ -13,9 +13,10 @@ let envify = require('envify/custom');
 import * as fs from 'fs';
 import * as Terser from 'terser';
 
-let config = configBuilder(__dirname + '/../config', ENVIRONMENT);
+let config = configBuilder(__dirname + '/../../config', ENVIRONMENT);
 
-require('roads').build(__dirname + '/client.js', __dirname + '/static/js/client.brws.js', {
+let builtPath = __dirname + '/../../static/js/client.brws.js';
+require('roads').build(__dirname + '/client.js', builtPath, {
     browserifyOptions: {
         debug: true,
         transform: [envify({
@@ -33,7 +34,7 @@ require('roads').build(__dirname + '/client.js', __dirname + '/static/js/client.
     }
 }).then(() => {
     return new Promise((resolve, reject) => {
-        fs.readFile(__dirname + '/static/js/client.brws.js', (err, data) => {
+        fs.readFile(builtPath, (err, data) => {
             if (err) {
                 return reject(err);
             }
@@ -58,7 +59,7 @@ require('roads').build(__dirname + '/client.js', __dirname + '/static/js/client.
         if (result.error) {
             throw result.error;
         }
-        fs.writeFileSync(__dirname + '/static/js/client.brws.min.js', result.code);
+        fs.writeFileSync(builtPath, result.code);
 }).catch((err: Error) => {
     console.log('build error', err);
 });

@@ -23,6 +23,6 @@
         "./types"
     ],
     "include": [
-        "./src/**/*.ts", "src/web/client.js"
+        "./src/**/*.ts", "src/web/client.ts"
     ]
 }
