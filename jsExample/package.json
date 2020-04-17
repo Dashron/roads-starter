@@ -1,0 +1,19 @@
+{
+  "name": "roads-starter-example",
+  "version": "2.0.0",
+  "author": {
+    "name": "Aaron Hedges",
+    "email": "aaron@dashron.com",
+    "url": "http://www.dashron.com"
+  },
+  "description": "Example for roads.js",
+  "devDependencies": {},
+  "dependencies": {
+    "brfs": "^2.0.2",
+    "handlebars": "4.7.6",
+    "roads": "6.2.4",
+    "terser": "4.6.10"
+  },
+  "private": true,
+  "license": "MIT"
+}

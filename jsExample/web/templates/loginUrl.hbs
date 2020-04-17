@@ -1,0 +1,11 @@
+{{! vars: 
+ - cognitoUrl - hostname of your amazon cognito url
+ - redirectUrl - full redirect url with scheme, hostname and path
+ - client id - amazon cognito client id
+}}
+{{#if loggedIn}}
+    <h1>You're logged in! You don't really need to do this again</h1>
+    But here's the <a href="https://{{cognitoUrl}}/login?response_type=code&client_id={{clientId}}&redirect_uri={{redirectUrl}}">login</a> link anyway 
+{{else}}
+	<a href="https://{{cognitoUrl}}/login?response_type=code&client_id={{clientId}}&redirect_uri={{redirectUrl}}">login</a>
+{{/if}}

@@ -1,0 +1,40 @@
+version: '3'
+services:
+  # https://stackoverflow.com/a/35895156/1886079
+  # init:
+  #  build: .
+  #  command: ["node", "init.js"]
+  api:
+    build:
+      context: ../
+      dockerfile: tsExample/Dockerfile-node
+    # depends_on:
+    #   - "init"
+    restart: always
+    environment: 
+      ROADS_ENV: "docker"
+    command: ["node", "tsExample/builtSrc/server.js", "api"]
+  web:
+    build:
+      context: ../
+      dockerfile: tsExample/Dockerfile-node
+    restart: always
+    environment: 
+      ROADS_ENV: "docker"
+    depends_on:
+      - "api"
+    command: ["node", "tsExample/builtSrc/server.js", "web"]
+  nginx:
+    build:
+      context: ../
+      dockerfile: tsExample/Dockerfile-nginx
+    image: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - "web"
+      - "api"
