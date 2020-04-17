@@ -23,7 +23,7 @@ services:
       ROADS_ENV: "docker"
     depends_on:
       - "api"
-    command: ["node", "tsExample/builtSrc//server.js", "web"]
+    command: ["node", "tsExample/builtSrc/server.js", "web"]
   nginx:
     build:
       context: ../

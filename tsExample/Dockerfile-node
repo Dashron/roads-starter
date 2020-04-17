@@ -15,3 +15,6 @@ RUN npm install
 
 # Bundle app source
 COPY . .
+
+# Ensure we're using the most recent version of roads starter in this example
+COPY . ./tsExample/node_modules/roads-starter
