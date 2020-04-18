@@ -1,6 +1,6 @@
 {
   "name": "roads-starter-example",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": {
     "name": "Aaron Hedges",
     "email": "aaron@dashron.com",
@@ -14,8 +14,8 @@
   "dependencies": {
     "brfs": "^2.0.2",
     "handlebars": "4.7.6",
-    "roads": "6.2.4",
-    "terser": "4.6.10",
+    "roads": "6.2.6",
+    "terser": "4.6.11",
     "sequelize": "5.21.6"
   },
   "private": true,
