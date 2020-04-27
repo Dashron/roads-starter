@@ -6,18 +6,16 @@ import { Request } from 'roads';
 import { Sequelize } from "sequelize/types";
 import UserRepresentation from './userRepresentation';
 import { Logger } from "../../";
+import { APIProjectConfig } from "../apiProject";
+import StarterResource from "../starterResource";
 
 const { NotFoundError, InvalidRequestError, ForbiddenError } = HTTPErrors;
 const { MEDIA_JSON, MEDIA_JSON_MERGE, AUTH_BEARER } = CONSTANTS;
 
 
-export default class UserResource extends Resource {
-    protected dbConnection: Sequelize
-
-    constructor(dbConnection: Sequelize, logger: Logger, tokenResolver: Function, cognitoUrl: string, cognitoPort: number) {
-        super();
-
-        this.dbConnection = dbConnection;
+export default class UserResource extends StarterResource {
+    constructor(dbConnection: Sequelize, logger: Logger, tokenResolver: Function, config: APIProjectConfig) {
+        super(dbConnection, logger, tokenResolver, config);
 
         this.addAction("fullReplace", async (models: User, requestBody: any, requestMediaHandler: WritableRepresentation, auth: User) => {
             if (!requestBody || !requestBody.accessToken) {
@@ -27,7 +25,7 @@ export default class UserResource extends Resource {
             // Ensure that the user being registered via amazon cognito actually exists in amazon cognito. 
             // This is a lightweight check to ensure all data to this endpoint is valid, as opposed to forcing some form of authentication on this endpoint 
             // Note: this might be better as a part of the userRepresentation Validation. Maybe a new "validate multi" function or something.
-            let cognitoRequest = new Request(true, cognitoUrl, cognitoPort);
+            let cognitoRequest = new Request(true, config.cognitoUrl, config.cognitoPort);
             let authResponse = await cognitoRequest.request('GET', '/oauth2/userInfo', undefined, {
                 'authorization': 'Bearer ' + requestBody.accessToken
             });
@@ -83,7 +81,7 @@ export default class UserResource extends Resource {
 
         this.addAction("delete", (models: User, requestBody: any, requestMediaHandler: WritableRepresentation, auth: User) => {
             // auth is valid if we get to this point, but I'm checking for auth here to protect against bugs
-            // this would be a good location to check auth roles
+            // this would be a good dbConnection to check auth roles
             if (!auth || auth.id != models.id) {
                 throw new ForbiddenError('You do not have permission to manipulate this resource');
             }
@@ -97,7 +95,7 @@ export default class UserResource extends Resource {
     }
 
     async modelsResolver(urlParams: ParsedURLParams, searchParams: URLSearchParams | undefined, action: keyof ActionList, pathname: string) {
-        let user = await this.dbConnection.models.User.findOne({
+        let user = await User.findOne({
             where: {
                 remoteId: urlParams.remote_id
             }
@@ -108,7 +106,7 @@ export default class UserResource extends Resource {
         }
 
         if (action === 'fullReplace') {
-            return this.dbConnection.models.User.build({
+            return User.build({
                 remoteId: urlParams.remote_id,
                 active: 1
             });

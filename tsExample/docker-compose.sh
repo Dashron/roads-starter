@@ -1,3 +1,3 @@
 tsc
-node builtSrc/web/buildClient.js
+ROADS_ENV=docker node builtSrc/web/buildClient.js
 docker-compose $@

@@ -12,7 +12,8 @@
     "brfs": "^2.0.2",
     "handlebars": "4.7.6",
     "roads": "6.2.6",
-    "terser": "4.6.11"
+    "terser": "4.6.11",
+    "envify": "4.1.0"
   },
   "private": true,
   "license": "MIT"

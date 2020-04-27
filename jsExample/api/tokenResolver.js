@@ -1,10 +1,10 @@
 "use strict";
 let jwt = require('jsonwebtoken');
 
-module.exports = (sequelize, logger, secret) => {
+module.exports = (sequelize, logger, config) => {
     return async function (token) {
         try {
-            let decoded = jwt.verify(token, secret, {
+            let decoded = jwt.verify(token, config.secret, {
                 algorithms: ['HS256']
             });
 
@@ -22,6 +22,7 @@ module.exports = (sequelize, logger, secret) => {
                 return false;
             }
         } catch (e) {
+            console.log('auth failure', e);
             return false;
         }
     };

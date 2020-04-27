@@ -1,2 +1,2 @@
-node web/buildClient.js
+ROADS_ENV=docker node web/buildClient.js
 docker-compose $@

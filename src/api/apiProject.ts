@@ -1,6 +1,6 @@
 "use strict";
 
-import { Router, Resource } from 'roads-api';
+import { Router } from 'roads-api';
 import { Server } from 'roads-server';
 import { Sequelize } from 'sequelize';
 import UserResource from './users/userResource';
@@ -13,7 +13,7 @@ import {
 } from 'roads';
 
 import { Logger } from '../index';
-import { User } from './users/userModel';
+import { StarterResourceConstructor } from './starterResource';
 
 function hasAllKeys(check: object, keys: Array<string>) {
     if (!check) {
@@ -117,8 +117,8 @@ export default class APIProject {
         this.connection.import(path);
     }
 
-    addResource(path: string, resource: Resource, templateSchema: any) {
-        this.router.addResource(path, resource, templateSchema);
+    addResource(path: string, resource: StarterResourceConstructor, templateSchema?: any) {
+        this.router.addResource(path, new resource(this.connection, this.logger, this.tokenResolver, this.config), templateSchema);
     }
 
     addTokenResolver(resolverBuilder: (connection: Sequelize, logger: Logger, config: APIProjectConfig) => TokenResolver) {
@@ -132,7 +132,7 @@ export default class APIProject {
 
         this.addModel('./users/userModel.js');
         
-        this.addResource('/users/{remote_id}', new UserResource(this.connection, this.logger, this.tokenResolver, this.config.cognitoUrl, this.config.cognitoPort), {
+        this.addResource('/users/{remote_id}', UserResource, {
             urlParams: {
                 schema: {
                     remote_id: {

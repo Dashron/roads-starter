@@ -1,9 +1,10 @@
+import { User } from "./userModel";
 import { ParsedURLParams, ActionList } from "roads-api/types/Resource/resource";
-import { Resource } from 'roads-api';
 import { Sequelize } from "sequelize/types";
 import { Logger } from "../../";
-export default class UserResource extends Resource {
-    protected dbConnection: Sequelize;
-    constructor(dbConnection: Sequelize, logger: Logger, tokenResolver: Function, cognitoUrl: string, cognitoPort: number);
-    modelsResolver(urlParams: ParsedURLParams, searchParams: URLSearchParams | undefined, action: keyof ActionList, pathname: string): Promise<import("sequelize/types").Model<unknown, unknown>>;
+import { APIProjectConfig } from "../apiProject";
+import StarterResource from "../starterResource";
+export default class UserResource extends StarterResource {
+    constructor(dbConnection: Sequelize, logger: Logger, tokenResolver: Function, config: APIProjectConfig);
+    modelsResolver(urlParams: ParsedURLParams, searchParams: URLSearchParams | undefined, action: keyof ActionList, pathname: string): Promise<User>;
 }
