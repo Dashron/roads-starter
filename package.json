@@ -1,6 +1,6 @@
 {
   "name": "roads-starter",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A starter project for building websites with roads and roads-api",
   "main": "index.js",
   "types": "types/index.d.ts",
@@ -30,7 +30,8 @@
     "roads-server": "^1.0.3",
     "pg": "8.0.2",
     "sequelize": "5.21.6",
-    "json-pointer": "0.6.0"
+    "json-pointer": "0.6.0",
+    "@types/jwk-to-pem": "^2.0.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.30",
@@ -39,7 +40,6 @@
     "@types/validator": "^13.0.0",
     "@types/node": "^13.3.0",
     "@types/json-pointer": "^1.0.30",
-    "@types/jsonwebtoken": "^8.3.9",
-    "@types/jwk-to-pem": "^2.0.0"
+    "@types/jsonwebtoken": "^8.3.9"
   }
 }
