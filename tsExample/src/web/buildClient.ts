@@ -16,6 +16,7 @@ import * as Terser from 'terser';
 let config = configBuilder(__dirname + '/../../config', ENVIRONMENT);
 
 let builtPath = __dirname + '/../../static/js/client.brws.js';
+let builtPathMin = __dirname + '/../../static/js/client.brws.min.js';
 require('roads').build(__dirname + '/client.js', builtPath, {
     browserifyOptions: {
         debug: true,
@@ -59,7 +60,7 @@ require('roads').build(__dirname + '/client.js', builtPath, {
         if (result.error) {
             throw result.error;
         }
-        fs.writeFileSync(builtPath, result.code);
+        fs.writeFileSync(builtPathMin, result.code);
 }).catch((err: Error) => {
     console.log('build error', err);
 });
