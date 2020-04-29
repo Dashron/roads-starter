@@ -1,5 +1,5 @@
-import { InputValidationError } from 'roads-api/types/core/httpErrors';
-export declare function problemsToFormdata(fieldPaths: Array<string>, requestBody: any, problems: Array<InputValidationError>): {
+import { FieldErrorPayload } from 'roads-api/types/Representation/validationError';
+export declare function problemsToFormdata(fieldPaths: Array<string>, requestBody: any, problems: Array<FieldErrorPayload>): {
     [x: string]: {
         invalid: boolean;
         value: any;
