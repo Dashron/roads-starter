@@ -2,7 +2,7 @@ import { Road } from 'roads';
 import SimpleRouter from 'roads/types/middleware/simpleRouter';
 import { Logger } from '../index';
 import { LayoutWrapper } from './middleware/addLayout';
-interface PrivateWebProjectConfig {
+export interface PrivateWebProjectConfig {
     csrfCookieName: string;
     api: {
         secure: boolean;
@@ -34,4 +34,3 @@ export default class PrivateWebProject {
     addStaticFolder(rootPath: string, folderPath: string, contentType: string, encoding?: string): void;
     start(): void;
 }
-export {};

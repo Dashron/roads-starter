@@ -17,7 +17,7 @@ import apiMiddleware from './middleware/api';
 import privateAuth from './middleware/privateAuth';
 
 
-interface PrivateWebProjectConfig {
+export interface PrivateWebProjectConfig {
     csrfCookieName: string,
     api: {
         secure: boolean,

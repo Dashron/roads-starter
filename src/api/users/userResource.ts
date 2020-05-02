@@ -90,6 +90,8 @@ export default class UserResource extends StarterResource {
             return models.save();
         }, {
             authSchemes: { [AUTH_BEARER]: tokenResolver },
+            defaultResponseMediaType: MEDIA_JSON,
+            responseMediaTypes: { [MEDIA_JSON]: new UserRepresentation('delete') },
             authRequired: true
         });
     }
