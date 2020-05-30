@@ -36,7 +36,11 @@ export function createLogger(logName: string) {
             console.log('WARN: ' + text);
         },
         error: (error) => {
-            console.log('LOG ERROR: ' + error.stack);
+            if (error instanceof Error) {
+                console.log('LOG ERROR: ' + error.stack);
+            } else {
+                console.log('LOG ERROR:', error);
+            }
         }
     };
 };

@@ -3,6 +3,7 @@
 import SimpleRouter from "roads/types/middleware/simpleRouter";
 
 import * as formValidation from './formValidation';
+import { Logger } from "../index";
 
 export interface PublicUserRoutesConfig {
     cognitoUrl: string,
@@ -11,7 +12,7 @@ export interface PublicUserRoutesConfig {
 }
 
 export default (profilePage: Function, loginPage: Function) => {
-    return function (router: SimpleRouter, config: PublicUserRoutesConfig) {
+    return function (router: SimpleRouter, config: PublicUserRoutesConfig, logger: Logger) {
         router.addRoute('GET', '/profile', async function (url, body, headers) {
             this.setTitle('Your Profile');
             if (!this.loggedIn || !this.authDecoded) {
@@ -21,7 +22,7 @@ export default (profilePage: Function, loginPage: Function) => {
             let userResponse = await this.api('GET', '/users/' + this.authDecoded.val);
 
             if (userResponse.status !== 200) {
-                // TODO: configurable response template
+                logger.warn(userResponse);
                 return new this.Response('Unexpected error', 500);
             }
             let responseBody = JSON.parse(userResponse.body);
@@ -65,7 +66,7 @@ export default (profilePage: Function, loginPage: Function) => {
                 let userResponse = await this.api('GET', '/users/' + this.authDecoded.val);
 
                 if (userResponse.status !== 200) {
-                    // TODO: configurable response template
+                    logger.warn(userResponse);
                     return new this.Response('Unexpected error', 500);
                 }
 

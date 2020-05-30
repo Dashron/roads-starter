@@ -93,7 +93,8 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
         let parsedResponse = JSON.parse(authResponse.body);
 
         if (typeof(parsedResponse) !== "object") {
-            console.log("Could not locate ID Token in the auth response");
+            logger.warn("Could not locate ID Token in the auth response");
+            logger.warn(authResponse);
             return new this.Response("Unknown error", 500);
         }
         
@@ -102,6 +103,8 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
         // JWT decode the id token
         let jwtUser: JWTUser = await new Promise((resolve, reject) => {
             if (!("id_token" in parsedResponse)) {
+                logger.warn("Could not locate ID Token in the auth response");
+                logger.warn(parsedResponse);
                 return reject(new Error("Could not locate ID Token in the auth response"));
             }
 
@@ -113,12 +116,16 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
             let decoded = jwt.decode(idToken, {complete: true});
 
             if (!decoded || typeof(decoded) === "string") {
+                logger.warn('Could not decode the JWT body for this auth request');
+                logger.warn(decoded);
                 return reject(new Error('Could not decode the JWT body for this auth request'));
             }
 
             let jwk = getProperJwk(decoded.header);
 
             if (!jwk) {
+                logger.warn('could not find the proper JWK for this auth request');
+                logger.warn(jwk);
                 return reject(new Error('could not find the proper JWK for this auth request'));
             }
 
@@ -140,28 +147,27 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
             "refreshToken": parsedResponse.refresh_token
         }, {});
 
-        let response = new this.Response('Unexpected error when updating user login details', 500) as CookieResponse;
-
-        if (apiUser.status === 200) {
-            response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'}) as CookieResponse;
-            let parsedUser = JSON.parse(apiUser.body);
-
-            let token = jwt.sign({
-                val: parsedUser.remoteId
-            }, config.secret, {
-                expiresIn: '1d',
-                algorithm: 'HS256'
-            });
-    
-            response.setCookie(config.authCookieName, token, {
-                expires: moment().add(1, 'd').toDate(),
-                secure: config.secure,
-                domain: config.hostname,
-                path: '/'
-            });
-        } else {
+        if (apiUser.status !== 200) {
             logger.warn(apiUser);
+            return new this.Response('Unexpected error when updating user login details', 500) as CookieResponse;
         }
+
+        let response = new this.Response('', 302, {'content-type': 'text/html', 'location': '/'}) as CookieResponse;
+        let parsedUser = JSON.parse(apiUser.body);
+
+        let token = jwt.sign({
+            val: parsedUser.remoteId
+        }, config.secret, {
+            expiresIn: '1d',
+            algorithm: 'HS256'
+        });
+
+        response.setCookie(config.authCookieName, token, {
+            expires: moment().add(1, 'd').toDate(),
+            secure: config.secure,
+            domain: config.hostname,
+            path: '/'
+        });
 
         return response;
     });

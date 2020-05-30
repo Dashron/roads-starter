@@ -1,5 +1,3 @@
-"use strict";
-
 import { Server } from 'roads-server';
 import * as fs from 'fs';
 import * as path from 'path';
