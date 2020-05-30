@@ -1,4 +1,5 @@
 # Roads-Starter: TODO
+0. Bring over some of the improvements from dd: template reloading, live static file reloading, more?
 0. Fix the awful "hasKey" stuff for config. Error should report the key, and there shouldn't be any code duplication
 0. Improve session security: https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html (http only cookie, no identifyable info in the token, make it random and map to server side blob)
 1. Move db connection out of the api constructor, and into something that can be injected

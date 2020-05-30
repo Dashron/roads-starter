@@ -69,7 +69,7 @@ export default class PrivateWebProject {
         this.road.use(apiMiddleware(config.api.secure, config.api.hostname, config.api.port));
         this.road.use(privateAuth(config.authCookieName, this.logger, config.secret));
 
-        this.router = new Middleware.SimpleRouter(this.road);
+        this.router = new Middleware.SimpleRouter();
     }
 
     // todo: shared root project object
@@ -149,6 +149,7 @@ export default class PrivateWebProject {
             return new Response('Unknown Error', 500);
         }, options);
 
+        this.router.applyMiddleware(this.road);
         server.listen(this.config.port, this.config.host);
     }
 }
