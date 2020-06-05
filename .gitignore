@@ -4,13 +4,15 @@ node_modules
 
 *.js
 */*.js
+*.key
 !src
 !jest.config.js
 !jsExample/*.js
 !jsExample/*/*.js
 
 tsExample/config/*
-!tsExample/config/*.example.pem
+!tsExample/config/*.example.crt
+!tsExample/config/*.example.key
 !tsExample/config/*.example.conf
 !tsExample/config/*.example.txt
 !tsExample/config/*.example.js

@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   # https://stackoverflow.com/a/35895156/1886079
   # init:
@@ -10,6 +10,8 @@ services:
       dockerfile: tsExample/Dockerfile-node
     # depends_on:
     #   - "init"
+    volumes:
+      - ../:/code
     restart: always
     environment: 
       ROADS_ENV: "docker"
@@ -18,6 +20,8 @@ services:
     build:
       context: ../
       dockerfile: tsExample/Dockerfile-node
+    volumes:
+        - ../:/code
     restart: always
     environment: 
       ROADS_ENV: "docker"
@@ -34,7 +38,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./logs/nginx:/var/log/nginx
+      - ./static:/web/static:z
+      - ./logs/nginx:/var/log/nginx:z
+
     depends_on:
       - "web"
       - "api"

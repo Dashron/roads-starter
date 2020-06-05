@@ -7,6 +7,14 @@
     "url": "http://www.dashron.com"
   },
   "main": "server.js",
+  "scripts": {
+    "dev-up": "./docker-compose.sh -f docker-compose.yml up",
+    "dev-build": "./docker-compose.sh -f docker-compose.yml up --build",
+    "dev-stop": "docker-compose -f docker-compose.yml stop",
+    "restart-api": "docker-compose -f docker-compose.yml restart api",
+    "restart-web": "./docker-compose.sh -f docker-compose.yml restart web",
+    "restart-nginx": "docker-compose -f docker-compose.yml restart nginx"
+  },
   "description": "Example for roads.js",
   "devDependencies": {
     "@types/envify": "0.0.29"
@@ -17,7 +25,8 @@
     "roads": "6.2.6",
     "terser": "4.6.11",
     "sequelize": "5.21.6",
-    "envify": "4.1.0"
+    "envify": "4.1.0",
+    "pg": "8.2.X"
   },
   "private": true,
   "license": "MIT"

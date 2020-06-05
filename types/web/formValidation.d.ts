@@ -3,7 +3,7 @@ export declare function problemsToFormdata(fieldPaths: Array<string>, requestBod
     [x: string]: {
         invalid: boolean;
         value: any;
-        problems: string[];
+        problems: Array<string>;
     };
 };
 export declare function valOrUndefined(value: string): string | undefined;

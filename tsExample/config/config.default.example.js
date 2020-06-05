@@ -11,8 +11,6 @@ module.exports = {
         "secure": true,
         "secret": "",
         "authCookieName": "",
-        "layoutPath": "",
-        "pageNotFoundPath": "",
         "layoutConstants": {
             "GTM_ID": ""
         },

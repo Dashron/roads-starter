@@ -26,12 +26,14 @@
     "moment": "2.26.0",
     "roads-api": "1.2.X",
     "roads-server": "1.0.X",
-    "pg": "8.2.1",
-    "sequelize": "5.21.11",
+    "pg": "8.2.X",
+    "sequelize": "5.21.6",
     "json-pointer": "0.6.0",
-    "@types/jwk-to-pem": "^2.0.0"
+    "roads-req": "0.4.X",
+    "roads": "6.2.X"
   },
   "devDependencies": {
+    "@types/jwk-to-pem": "^2.0.0",
     "@types/bluebird": "^3.5.32",
     "@types/cookie": "^0.4.0",
     "@types/uri-templates": "^0.1.30",
@@ -39,9 +41,5 @@
     "@types/node": "^13.3.0",
     "@types/json-pointer": "^1.0.30",
     "@types/jsonwebtoken": "^8.5.0"
-  },
-  "peerDependencies": {
-    "roads-req": "0.4.X",
-    "roads": "6.2.X"
   }
 }

@@ -9,5 +9,5 @@ export interface Logger {
     log: (data: any) => any;
     warn: (warning: any) => any;
     info: (details: any) => any;
-    error: (err: Error) => any;
+    error: (err: any) => any;
 }

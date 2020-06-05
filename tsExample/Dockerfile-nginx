@@ -1,6 +1,6 @@
 FROM nginx
 
 COPY tsExample/config/nginx.conf /etc/nginx/nginx.conf
-COPY tsExample/config/certificate.pem /etc/nginx/certificate.pem
-COPY tsExample/config/privatekey.pem /etc/nginx/privatekey.pem
+COPY tsExample/config/certificate.crt /etc/nginx/certificate.crt
+COPY tsExample/config/privatekey.key /etc/nginx/privatekey.key
 COPY tsExample/static /web/static
