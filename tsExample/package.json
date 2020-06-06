@@ -1,6 +1,6 @@
 {
   "name": "roads-starter-example",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": {
     "name": "Aaron Hedges",
     "email": "aaron@dashron.com",
@@ -17,16 +17,16 @@
   },
   "description": "Example for roads.js",
   "devDependencies": {
-    "@types/envify": "0.0.29"
+    "@types/envify": "0.0.30"
   },
   "dependencies": {
     "brfs": "^2.0.2",
     "handlebars": "4.7.6",
     "roads": "6.2.6",
-    "terser": "4.6.11",
-    "sequelize": "5.21.6",
+    "terser": "4.7.0",
     "envify": "4.1.0",
-    "pg": "8.2.X"
+    "pg": "8.2.1",
+    "sequelize": "5.21.12"
   },
   "private": true,
   "license": "MIT"

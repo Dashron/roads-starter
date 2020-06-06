@@ -1,6 +1,6 @@
 {
   "name": "roads-starter",
-  "version": "2.1.6",
+  "version": "2.2.0",
   "description": "A starter project for building websites with roads and roads-api",
   "main": "index.js",
   "types": "types/index.d.ts",
@@ -8,7 +8,7 @@
     "test": "jest tests",
     "start-api": "node api/api-server.js",
     "start-web": "node web/web-server.js",
-    "build": "tsc"
+    "build": "npm install && npm install pg --no-save && npm install sequelize --no-save && tsc"
   },
   "repository": {
     "type": "git",
@@ -21,16 +21,14 @@
   },
   "homepage": "https://github.com/Dashron/roads-starter#readme",
   "dependencies": {
+    "json-pointer": "0.6.0",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.3",
     "moment": "2.26.0",
+    "roads": "6.2.X",
     "roads-api": "1.2.X",
-    "roads-server": "1.0.X",
-    "pg": "8.2.X",
-    "sequelize": "5.21.7",
-    "json-pointer": "0.6.0",
     "roads-req": "0.4.X",
-    "roads": "6.2.X"
+    "roads-server": "1.0.X"
   },
   "devDependencies": {
     "@types/jwk-to-pem": "^2.0.0",
@@ -41,5 +39,9 @@
     "@types/node": "^13.3.0",
     "@types/json-pointer": "^1.0.30",
     "@types/jsonwebtoken": "^8.5.0"
+  },
+  "peerDependencies": {
+    "pg": "8.X.X",
+    "sequelize": "5.X.X"
   }
 }
