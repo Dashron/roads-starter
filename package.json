@@ -1,6 +1,6 @@
 {
   "name": "roads-starter",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "A starter project for building websites with roads and roads-api",
   "main": "index.js",
   "types": "types/index.d.ts",
@@ -27,7 +27,7 @@
     "roads-api": "1.2.X",
     "roads-server": "1.0.X",
     "pg": "8.2.X",
-    "sequelize": "5.21.6",
+    "sequelize": "5.21.7",
     "json-pointer": "0.6.0",
     "roads-req": "0.4.X",
     "roads": "6.2.X"
