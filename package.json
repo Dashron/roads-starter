@@ -1,6 +1,6 @@
 {
   "name": "roads-starter",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A starter project for building websites with roads and roads-api",
   "main": "index.js",
   "types": "types/index.d.ts",
