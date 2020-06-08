@@ -28,6 +28,8 @@ let client = new ClientProject({
 
 client.pjax.registerAdditionalElement(document.getElementById('root-link'));
 
+client.attachRouter();
+
 let loginTemplate = fs.readFileSync(__dirname + '/../../templates/loginUrl.hbs').toString('utf-8');
 let profileTemplate = fs.readFileSync(__dirname + '/../../templates/profile.hbs').toString('utf-8');
 

@@ -18,6 +18,7 @@ export default class PrivateWebProject {
     pjax: RoadsPJAX;
     router: SimpleRouter;
     constructor(config: ClientProjectConfig, logger: Logger, document: Document, window: Window, mainContentElement: HTMLElement, pageNotFoundTemplate: () => string);
+    attachRouter(): void;
     addRoutes(module: (router: SimpleRouter, config: ClientProjectConfig) => void): void;
     hasAllKeys(check: object, keys: Array<string>): boolean;
 }

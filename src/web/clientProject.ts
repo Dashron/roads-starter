@@ -55,16 +55,19 @@ export default class PrivateWebProject {
         this.road.use(apiMiddleware(config.api.external.secure, config.api.external.hostname, config.api.external.port));
         this.road.use(csrfClientONLY);
 
+        // TODO: pjax seems wrong here. maybe it's finally time to take it out of roads. it would be great if register attached to the main content element.
         this.pjax = new RoadsPJAX(this.road, mainContentElement, window);
         this.pjax.addTitleMiddleware();
         this.pjax.addCookieMiddleware(document);
-        this.pjax.register();
-
+        
         this.road.use(publicAuth(config.authCookieName, console));
 
-        this.router = new Middleware.SimpleRouter(this.road);
+        this.pjax.register();
     }
 
+    attachRouter() {
+        this.router = new Middleware.SimpleRouter(this.road);
+    }
 
     addRoutes(module: (router: SimpleRouter, config: ClientProjectConfig) => void) {
         module(this.router, this.config);
