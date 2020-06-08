@@ -6,7 +6,7 @@ export default (secure: boolean, hostname: string, port: number): Middleware => 
         // Add an "api" function to the request context that makes HTTP requests to the API
         let apiClient = new Request(secure, hostname, port);
         this.api = (method: string, path: string, body?: string, headers?: {[x: string]: string}) => {
-            if (this.loggedIn) {
+            if (this.isLoggedIn()) {
                 if (!headers) {
                     headers = {};
                 }

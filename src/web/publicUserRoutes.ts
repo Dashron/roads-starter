@@ -15,7 +15,7 @@ export default (profilePage: Function, loginPage: Function) => {
     return function (router: SimpleRouter, config: PublicUserRoutesConfig, logger: Logger) {
         router.addRoute('GET', '/profile', async function (url, body, headers) {
             this.setTitle('Your Profile');
-            if (!this.loggedIn || !this.authDecoded) {
+            if (!this.isLoggedIn()) {
                 return new this.Response('', 302, {'location': '/'})
             }
 
@@ -40,7 +40,7 @@ export default (profilePage: Function, loginPage: Function) => {
         });
 
         router.addRoute('POST', '/profile', async function (url, body, headers) {
-            if (!this.loggedIn || !this.authDecoded || !this.authDecoded.val) {
+            if (!this.isLoggedIn()) {
                 return new this.Response('', 302, {'location': '/profile'})
             }
 
@@ -90,7 +90,7 @@ export default (profilePage: Function, loginPage: Function) => {
             this.setTitle('Log In');
             
             let responseBody = loginPage({
-                loggedIn: this.loggedIn,
+                loggedIn: this.isLoggedIn(),
                 cognitoUrl: config.cognitoUrl,
                 redirectUrl: config.cognitoRedirectUri,
                 clientId: config.cognitoClientId
