@@ -5,8 +5,6 @@ var jwt = require('jsonwebtoken');
 
 let privateAuth = (authCookieName: string, logger: Logger, secret: string): Middleware => {
     return function (method, path, body, headers, next) {
-        this.loggedIn = false;
-        
         if (this.cookies[authCookieName]) {
             try {
                 // decode it and use the secret to ensure it's signed properly
@@ -15,7 +13,6 @@ let privateAuth = (authCookieName: string, logger: Logger, secret: string): Midd
                 });
 
                 if (decoded && decoded.val) {
-                    this.loggedIn = true;
                     this.authToken = this.cookies[authCookieName];
                     this.authDecoded = decoded;
                 }
@@ -24,6 +21,21 @@ let privateAuth = (authCookieName: string, logger: Logger, secret: string): Midd
             }
         }
 
+        this.isLoggedIn = (loggedInUserIdCheck?: number) => {
+            if (this.authDecoded) {
+
+                if (loggedInUserIdCheck === undefined) {
+                    return true;
+                }
+    
+                if (loggedInUserIdCheck == this.authDecoded.uid) {
+                    return true;
+                }
+            }
+    
+            return false;
+        };
+        
         return next();
     };
 };

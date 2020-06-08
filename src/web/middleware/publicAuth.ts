@@ -5,14 +5,11 @@ var jwt = require('jsonwebtoken');
 
 let publicAuth = (authCookieName: string, logger: Logger): Middleware => {
     return function (method, path, body, headers, next) {
-        this.loggedIn = false;
-    
         if (this.cookies[authCookieName]) {
             try {
                 let decoded = jwt.decode(this.cookies[authCookieName]);
                 
                 if (decoded) {
-                    this.loggedIn = true;
                     this.authToken = this.cookies[authCookieName];
                     this.authDecoded = decoded;
                 }
@@ -20,6 +17,21 @@ let publicAuth = (authCookieName: string, logger: Logger): Middleware => {
                 logger.error(e);
             }
         }
+
+        this.isLoggedIn = (loggedInUserIdCheck?: number) => {
+            if (this.authDecoded) {
+
+                if (loggedInUserIdCheck === undefined) {
+                    return true;
+                }
+    
+                if (loggedInUserIdCheck == this.authDecoded.uid) {
+                    return true;
+                }
+            }
+    
+            return false;
+        };
 
         return next();
     };

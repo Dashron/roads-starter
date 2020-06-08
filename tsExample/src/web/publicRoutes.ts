@@ -7,10 +7,9 @@ let indexTemplate = fs.readFileSync(__dirname + '/../../templates/index.hbs').to
 export default function (router: SimpleRouter) {
     router.addRoute('GET', '/', async function (url, body, headers) {
         let pageData = {
-            loggedIn: false
+            loggedIn: this.isLoggedIn()
         };
-        
-        pageData.loggedIn = this.loggedIn;
+
         let indexPage = Handlebars.compile(indexTemplate);
         this.setTitle('Welcome Home');
         return new this.Response(indexPage(pageData), 200, {'content-type': 'text/html'});

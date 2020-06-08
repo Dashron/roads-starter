@@ -156,7 +156,8 @@ export default (router: SimpleRouter, config: PrivateUserRoutesConfig, logger: L
         let parsedUser = JSON.parse(apiUser.body);
 
         let token = jwt.sign({
-            val: parsedUser.remoteId
+            val: parsedUser.remoteId,
+            uid: parsedUser.id
         }, config.secret, {
             expiresIn: '1d',
             algorithm: 'HS256'
