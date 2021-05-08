@@ -23,7 +23,7 @@
   "dependencies": {
     "brfs": "^2.0.2",
     "envify": "4.1.0",
-    "handlebars": "4.7.6",
+    "handlebars": "4.7.7",
     "pg": "^8.2.1",
     "roads": "6.2.6",
     "sequelize": "^5.21.12",
